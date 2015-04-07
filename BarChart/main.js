@@ -49,7 +49,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         //get groupings of selected attribute
         var getGroupNames = function (attribute) {
             var groupNames = [];
-            if(attribute == "Männer/Frauen"){
+            if(attribute == "Geschlecht"){
                 groupNames.push("Anzahl Männer");   
                 groupNames.push("Anzahl Frauen");   
             }else if(attribute == "Total"){
@@ -69,7 +69,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         //create data object, special cases: total, Anzahl_Frauen, Anzahl_Männer
         var data_object = [];
         
-        if(subSelected == "Männer/Frauen"){
+        if(subSelected == "Geschlecht"){
             groupNames.forEach(function(groupName){
                 var count_m = 0;
                 var count_f = 0;
@@ -112,7 +112,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 subGroupNames.forEach(function(subGroup) { 
                     console.log("subgroup", subGroup);
 
-                    subGroupArray.push({name: subGroup, value: subGroupData[subGroup] });
+                    subGroupArray.push({name: subGroup, value: subGroupData[subGroup], group: groupName });
                 });
                 console.log("subgrouparray", subGroupArray);
                data_object.push({ key: groupName,
@@ -120,25 +120,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                                 })
             });
         }
-            console.log('data_obj', data_object);
-//        //create data_object
-//        groupNames.forEach(function(groupName){
-//            var count_m = 0;
-//            var count_f = 0;
-//            data.filter(function(d){ return d[selected] == groupName }).forEach(function(obj){
-//                count_m = +count_m + +obj.Anzahl_Männer;   
-//                count_f = +count_f + +obj.Anzahl_Frauen;   
-//            })
-//            data_object.push({ key: groupName,
-//                            count: [{ name: "Anzahl Männer",
-//                                            value: +count_m },
-//                                    { name: "Anzahl Frauen",
-//                                            value: +count_f }]
-//                        });
-//        });
-//        console.log('groups', data);
-
-
+            
         x0.domain(data_object.map(function(d) { return d.key; }));
         x1.domain(subGroupNames).rangeRoundBands([0, x0.rangeBand()]);
         y.domain([0, d3.max(data_object, function(d) { return d3.max( d.count, function(d)  { return d.value; }); })]);
@@ -163,13 +145,13 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         
         svg.selectAll(".bars").remove();
 
-        var key = svg.selectAll(".key")
+        var bars = svg.selectAll(".bars")
             .data(data_object)
             .enter().append("g")
             .attr("class", "g")
             .attr("transform", function(d) { return "translate(" + x0(d.key) + ",0)"; });
 
-        key.selectAll("rect")
+        bars.selectAll("rect")
             .data(function(d) { return d.count; })
             .enter().append("rect")
             .attr("class", "bars")
@@ -178,6 +160,33 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
             .attr("y", function(d) { return y(d.value); })
             .attr("height", function(d) { return height - y(d.value); })
             .style("fill", function(d) { return color(d.name); });
+        
+        // define what happens when you hover over a bar
+        bars.selectAll("rect").on('mouseover', function (d) {
+            // make the country stroke a bit bolder
+            d3.select(this).attr('stroke-width', 3);
+
+            var bardata = {};
+            bardata[selected] = d.group;
+            bardata[subSelected] = d.name;
+            bardata['Anz. Absolventen'] = d.value;
+
+            var html = '';
+
+            for(var k in bardata) {
+                html += '<li><strong>'+k+'</strong> : '+bardata[k]+'</li>';
+            }
+
+            // display some additional data in the #info div
+            d3.select('#info ul').html(html);
+
+        }).on('mouseout', function (d) {
+            // empty the #info div
+            d3.select('#info ul').html('');
+            // make the stroke normal again
+            d3.select(this).attr('stroke-width', 1);
+        });
+
         
         svg.selectAll(".legend").remove();
 
@@ -203,7 +212,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         
     };
     
-    keys.push("Männer/Frauen");
+    keys.push("Geschlecht");
     keys.push("Total");
     var createSubSelector = function(selected) {
         //create sub selector
