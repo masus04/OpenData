@@ -206,7 +206,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
     keys.push("Männer/Frauen");
     keys.push("Total");
     var createSubSelector = function(selected) {
-            //create sub selector
+        //create sub selector
         var newSubSpan = d3.select('#subSelector').selectAll('span').data(keys.filter(function(d) { return d !== selected } )).enter()
             .append('div');
         
@@ -221,6 +221,9 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         newSubSpan.append('label')
             .attr('for', function(d){return d})
             .text(function(d){return d});
+        
+        radiobtn_total = document.getElementById("Total");
+        radiobtn_total.checked = true;
     }
     
     newSpan.append('input')
