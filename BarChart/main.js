@@ -1,21 +1,9 @@
 d3.csv("VisualisierungsDaten.csv", function(error, data) {
     
-    var keys = d3.keys(data[0]);
-    keys = keys.filter(function(k){
-        return (k !== "Anzahl_Total"
-                && k !== "Anzahl_Frauen"
-                && k !== "Anzahl_Männer"
-                && k !== "Jahr" );   
-    });
-    
-    //create selector
-    var newSpan = d3.select('#selector').selectAll('span').data(keys).enter()
-        .append('div');    
-    
     //help variables and functions (scaling etc.)
-    var margin = {top: 50, right: 20, bottom: 1500, left: 60},
-        width = 1200 - margin.left - margin.right,
-        height = 2000 - margin.top - margin.bottom;
+    var margin = {top: 100, right: 20, bottom: 1500, left: 60},
+        width = 1000 - margin.left - margin.right,
+        height = 1950 - margin.top - margin.bottom;
 
     var x0 = d3.scale.ordinal()
         .rangeRoundBands([0, width], .1);
@@ -42,18 +30,29 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    //Helper function to darken/lighten colors (used in hover over a bar)
+    var shadeColor = function(color, percent) {
+        var f = color.split(","),
+            t = percent < 0 ? 0 : 255,
+            p = percent < 0 ? percent * -1 : percent,
+            R = parseInt(f[0].slice(4)), 
+            G = parseInt(f[1]),
+            B = parseInt(f[2]);
+        return "rgb(" + (Math.round((t-R)*p)+R) + "," + (Math.round((t-G)*p)+G) + "," + (Math.round((t-B)*p)+B)+")";
+    }
       
     //function to render the whole diagramm
     var render = function(selected, subSelected){
         
-        //get groupings of selected attribute
+        //method to get names of groupings of selected attribute
         var getGroupNames = function (attribute) {
             var groupNames = [];
             if(attribute == "Geschlecht"){
-                groupNames.push("Anzahl Männer");   
-                groupNames.push("Anzahl Frauen");   
+                groupNames.push("Männer");   
+                groupNames.push("Frauen");   
             }else if(attribute == "Total"){
-                groupNames.push("Anzahl Total");
+                groupNames.push("Total");
             }else{
                 data.forEach(function(d){
                     groupNames.push(d[attribute]);   
@@ -75,15 +74,11 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 var count_f = 0;
                 data.filter(function(d){ return d[selected] == groupName }).forEach(function(obj){
                     count_m = +count_m + +obj.Anzahl_Männer;   
-                    count_f = +count_f + +obj.Anzahl_Frauen;   
+                    count_f = +count_f + +obj.Anzahl_Frauen;
                 })
-
-                data_object.push({ key: groupName,
-                                count: [{ name: "Anzahl Männer",
-                                                value: +count_m },
-                                        { name: "Anzahl Frauen",
-                                                value: +count_f }]
-                            });
+                data_object.push({ key: groupName, 
+                                  count: [{ name: "Männer", value: +count_m, group: groupName }, 
+                                          { name: "Frauen", value: +count_f, group: groupName }]});
             });
         }else if(subSelected == "Total"){
             groupNames.forEach(function(groupName){
@@ -91,11 +86,8 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 data.filter(function(d){ return d[selected] == groupName }).forEach(function(obj){
                     count = +count + +obj.Anzahl_Total;  
                 })
-
-                data_object.push({ key: groupName,
-                                count: [{ name: "Anzahl Total",
-                                                value: +count }]
-                            });
+                data_object.push({ key: groupName, 
+                                  count: [{ name: "Total", value: +count, group: groupName }]});
             });
         }else{
             groupNames.forEach(function(groupName){
@@ -106,32 +98,29 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 data.filter(function(d) { return d[selected] == groupName }).forEach(function(d){
                     subGroupData[d[subSelected]] = subGroupData[d[subSelected]] + +d.Anzahl_Total;
                 });
-                console.log('sgd', subGroupData);
-
                 var subGroupArray = [];
                 subGroupNames.forEach(function(subGroup) { 
-                    console.log("subgroup", subGroup);
-
-                    subGroupArray.push({name: subGroup, value: subGroupData[subGroup], group: groupName });
+                    subGroupArray.push({name: subGroup, 
+                                        value: subGroupData[subGroup], 
+                                        group: groupName });
                 });
-                console.log("subgrouparray", subGroupArray);
-               data_object.push({ key: groupName,
-                                count: subGroupArray
-                                })
+                data_object.push({ key: groupName, 
+                                  count: subGroupArray });
             });
         }
             
+        //set domains for each axis
         x0.domain(data_object.map(function(d) { return d.key; }));
         x1.domain(subGroupNames).rangeRoundBands([0, x0.rangeBand()]);
         y.domain([0, d3.max(data_object, function(d) { return d3.max( d.count, function(d)  { return d.value; }); })]);
         
-        svg.select("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+        //(re)create x axis
+        svg.select("g.x.axis").call(xAxis);
         
+        //(re)create y axis
         svg.select("g.y.axis").call(yAxis);
 
+        // display text vertical if Bildungsart is selected, because there are a lot of values
         if(selected == "Bildungsart"){
             svg.select("g")
             .attr("class", "x axis")
@@ -142,9 +131,10 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 .attr("transform", "rotate(-90)" );
         }
         
-        
+        //clear all bars before creating new ones
         svg.selectAll(".bars").remove();
 
+        //Create bars
         var bars = svg.selectAll(".bars")
             .data(data_object)
             .enter().append("g")
@@ -163,9 +153,12 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         
         // define what happens when you hover over a bar
         bars.selectAll("rect").on('mouseover', function (d) {
-            // make the country stroke a bit bolder
-            d3.select(this).attr('stroke-width', 3);
-
+            // make the color a bit darker
+            var color = d3.select(this).style("fill").replace(/ /g, '');
+            d3.select(this).attr("origin-color", color);
+            d3.select(this).style('fill', shadeColor(color, -0.25));
+                
+            //hover data for a bar
             var bardata = {};
             bardata[selected] = d.group;
             bardata[subSelected] = d.name;
@@ -177,19 +170,20 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 html += '<li><strong>'+k+'</strong> : '+bardata[k]+'</li>';
             }
 
-            // display some additional data in the #info div
             d3.select('#info ul').html(html);
 
         }).on('mouseout', function (d) {
             // empty the #info div
             d3.select('#info ul').html('');
-            // make the stroke normal again
-            d3.select(this).attr('stroke-width', 1);
+            // make the color normal again
+            d3.select(this).style('fill', d3.select(this).attr("origin-color"));
         });
 
         
-        svg.selectAll(".legend").remove();
 
+        
+        //build the legend in the top right corner
+        svg.selectAll(".legend").remove();      //clear legend first
         var legend = svg.selectAll(".legend")
             .data(subGroupNames.slice().reverse())
             .enter().append("g")
@@ -197,7 +191,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
             .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
         
         legend.append("rect")
-            .attr("y", -18)
+            .attr("y", -48)
             .attr("x", width - 18)
             .attr("width", 18)
             .attr("height", 18)
@@ -205,21 +199,33 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
 
         legend.append("text")
             .attr("x", width - 24)
-            .attr("y", -9)
+            .attr("y", -39)
             .attr("dy", ".35em")
             .style("text-anchor", "end")
             .text(function(d) { return d; });
         
     };
     
-    keys.push("Geschlecht");
-    keys.push("Total");
+    //keys for the selector
+    var keys = d3.keys(data[0]);
+        keys = keys.filter(function(k){
+            return (k !== "Anzahl_Total"
+                    && k !== "Anzahl_Frauen"
+                    && k !== "Anzahl_Männer"
+                    && k !== "Jahr" );   
+    });
+    //Additional keys for subselector
+    subKeys = keys.slice(0);
+    subKeys.push("Geschlecht");
+    subKeys.push("Total");
+    
+    //method to create subselector
     var createSubSelector = function(selected) {
-        //create sub selector
-        var newSubSpan = d3.select('#subSelector').selectAll('span').data(keys.filter(function(d) { return d !== selected } )).enter()
+
+        var subselector = d3.select('#subSelector').selectAll('span').data(subKeys.filter(function(d) { return d !== selected } )).enter()
             .append('div');
         
-        newSubSpan.append('input')
+        subselector.append('input')
             .attr({
                 type: "radio",
                 name: "subSelection",
@@ -227,15 +233,20 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
             .on('click', function (subSelected) { render(selected, subSelected) });
 
 
-        newSubSpan.append('label')
+        subselector.append('label')
             .attr('for', function(d){return d})
             .text(function(d){return d});
         
+        //Total is checked by default
         radiobtn_total = document.getElementById("Total");
         radiobtn_total.checked = true;
     }
     
-    newSpan.append('input')
+    //create selector
+    var selector = d3.select('#selector').selectAll('span').data(keys).enter()
+        .append('div');    
+    
+    selector.append('input')
         .attr({
             type: "radio",
             name: "selection",
@@ -246,33 +257,32 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                         render(selected, "Total"); 
             });
     
-    
-
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);    
-    
-
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Absolventen");
-
-    newSpan.append('label')
+    selector.append('label')
         .attr('for', function(d){return d})
         .text(function(d){return d});
+    
+    
+
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);    
+
+
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis)
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Absolventen");
+
 
     createSubSelector("Verwaltungsregion");
     render("Verwaltungsregion", "Total");
     radiobtn_vwlt = document.getElementById("Verwaltungsregion");
     radiobtn_vwlt.checked = true;
-    radiobtn_total = document.getElementById("Total");
-    radiobtn_total.checked = true;
   
 });
