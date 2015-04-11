@@ -1,88 +1,88 @@
 Jahr,Verwaltungsregion_Code,Verwaltungsregion_Bez,Träger_Code,Träger_Bez,Bildungsart_Code,Bildungsart_Bez,Typ_Code,Typ_Bez,Unterrichtssprache_Code,Unterrichtssprache_Bez,Anzahl_Total,Anzahl_Frauen,Anzahl_Männer
-2014,1,Bern-Mittelland,190,öffentliche Schule,10311000,MAR alte Sprachen,3,gymnasiale Maturität,1,deutsch,116,113,3
-2014,1,Bern-Mittelland,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,50,11,39
-2014,1,Bern-Mittelland,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,125,78,47
-2014,1,Bern-Mittelland,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,133,72,61
-2014,1,Bern-Mittelland,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,189,93,96
-2014,1,Bern-Mittelland,190,öffentliche Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,86,65,21
-2014,1,Bern-Mittelland,190,öffentliche Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,50,39,11
-2014,1,Bern-Mittelland,190,öffentliche Schule,10318000,MAR Musik,3,gymnasiale Maturität,1,deutsch,38,17,21
-2014,1,Bern-Mittelland,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,120,10,110
-2014,1,Bern-Mittelland,190,öffentliche Schule,10343000,Berufsmaturität I - gestalterische Richtung,1,Berufsmaturität I,1,deutsch,15,7,8
-2014,1,Bern-Mittelland,190,öffentliche Schule,10344000,Berufsmaturität I - gewerbliche Richtung,1,Berufsmaturität I,1,deutsch,29,23,6
-2014,1,Bern-Mittelland,190,öffentliche Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,112,16,96
-2014,1,Bern-Mittelland,190,öffentliche Schule,10353000,Berufsmaturität II - gestalterische Richtung,2,Berufsmaturität II,1,deutsch,42,25,17
-2014,1,Bern-Mittelland,190,öffentliche Schule,10354000,Berufsmaturität II - gewerbliche Richtung,2,Berufsmaturität II,1,deutsch,26,10,16
-2014,1,Bern-Mittelland,190,öffentliche Schule,10355000,Berufsmaturität II - naturwissenschaftliche Richtung,2,Berufsmaturität II,1,deutsch,43,19,24
-2014,1,Bern-Mittelland,190,öffentliche Schule,10356000,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,113,92,21
-2014,1,Bern-Mittelland,190,öffentliche Schule,10364000,Passerelle Berufsmaturität - UH,4,Passerelle,1,deutsch,77,33,44
-2014,1,Bern-Mittelland,191,private Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,23,11,12
-2014,1,Bern-Mittelland,191,private Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,5,1,4
-2014,1,Bern-Mittelland,191,private Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,45,19,26
-2014,1,Bern-Mittelland,191,private Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,45,14,31
-2014,1,Bern-Mittelland,191,private Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,60,30,30
-2014,1,Bern-Mittelland,191,private Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,23,11,12
-2014,1,Bern-Mittelland,191,private Schule,10318000,MAR Musik,3,gymnasiale Maturität,1,deutsch,14,10,4
-2014,1,Bern-Mittelland,191,private Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,166,91,75
-2014,1,Bern-Mittelland,191,private Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,21,4,17
-2014,1,Bern-Mittelland,191,private Schule,10352000,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,284,158,126
-2014,1,Bern-Mittelland,191,private Schule,10356000,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,19,13,6
-2014,1,Bern-Mittelland,191,private Schule,10364000,Passerelle Berufsmaturität - UH,4,Passerelle,1,deutsch,10,6,4
-2014,2,Biel-Seeland,190,öffentliche Schule,10311000,MAR alte Sprachen,3,gymnasiale Maturität,2,französisch,4,3,1
-2014,2,Biel-Seeland,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,27,24,3
-2014,2,Biel-Seeland,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,2,französisch,45,37,8
-2014,2,Biel-Seeland,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,3,deutsch/französisch,16,13,3
-2014,2,Biel-Seeland,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,13,2,11
-2014,2,Biel-Seeland,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,2,französisch,15,2,13
-2014,2,Biel-Seeland,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,3,deutsch/französisch,12,2,10
-2014,2,Biel-Seeland,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,32,18,14
-2014,2,Biel-Seeland,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,2,französisch,21,10,11
-2014,2,Biel-Seeland,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,3,deutsch/französisch,19,14,5
-2014,2,Biel-Seeland,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,21,12,9
-2014,2,Biel-Seeland,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,2,französisch,21,9,12
-2014,2,Biel-Seeland,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,3,deutsch/französisch,12,5,7
-2014,2,Biel-Seeland,190,öffentliche Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,33,28,5
-2014,2,Biel-Seeland,190,öffentliche Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,2,französisch,11,10,1
-2014,2,Biel-Seeland,190,öffentliche Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,14,12,2
-2014,2,Biel-Seeland,190,öffentliche Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,2,französisch,15,11,4
-2014,2,Biel-Seeland,190,öffentliche Schule,10318000,MAR Musik,3,gymnasiale Maturität,1,deutsch,13,9,4
-2014,2,Biel-Seeland,190,öffentliche Schule,10318000,MAR Musik,3,gymnasiale Maturität,2,französisch,4,2,2
-2014,2,Biel-Seeland,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,41,10,31
-2014,2,Biel-Seeland,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,2,französisch,13,8,5
-2014,2,Biel-Seeland,190,öffentliche Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,27,12,15
-2014,2,Biel-Seeland,190,öffentliche Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,2,französisch,11,5,6
-2014,2,Biel-Seeland,190,öffentliche Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,65,18,47
-2014,2,Biel-Seeland,190,öffentliche Schule,10354000,Berufsmaturität II - gewerbliche Richtung,2,Berufsmaturität II,1,deutsch,32,14,18
-2014,2,Biel-Seeland,190,öffentliche Schule,10364000,Passerelle Berufsmaturität - UH,4,Passerelle,2,französisch,12,6,6
-2014,2,Biel-Seeland,191,private Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,27,15,12
-2014,2,Biel-Seeland,191,private Schule,10352000,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,30,14,16
-2014,2,Biel-Seeland,191,private Schule,10352000,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,2,französisch,8,2,6
-2014,3,Oberland,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,53,46,7
-2014,3,Oberland,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,39,12,27
-2014,3,Oberland,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,76,40,36
-2014,3,Oberland,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,44,14,30
-2014,3,Oberland,190,öffentliche Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,41,37,4
-2014,3,Oberland,190,öffentliche Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,37,33,4
-2014,3,Oberland,190,öffentliche Schule,10318000,MAR Musik,3,gymnasiale Maturität,1,deutsch,37,26,11
-2014,3,Oberland,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,34,3,31
-2014,3,Oberland,190,öffentliche Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,11,7,4
-2014,3,Oberland,190,öffentliche Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,56,1,55
-2014,3,Oberland,191,private Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,34,15,19
-2014,3,Oberland,191,private Schule,10352000,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,99,60,39
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10311000,MAR alte Sprachen,3,gymnasiale Maturität,1,deutsch,24,23,1
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10312000,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,18,7,11
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10313000,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,50,31,19
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10314000,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,30,18,12
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10315000,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,76,40,36
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10316000,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,28,21,7
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10317000,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,31,24,7
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10318000,MAR Musik,3,gymnasiale Maturität,1,deutsch,8,1,7
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,28,4,24
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,61,37,24
-2014,4,Emmetal-Oberaargau,190,öffentliche Schule,10356000,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,19,15,4
-2014,4,Emmetal-Oberaargau,191,private Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,35,27,8
-2014,4,Emmetal-Oberaargau,191,private Schule,10352000,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,15,1,14
-2014,5,Berner Jura,190,öffentliche Schule,10341000,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,2,französisch,118,97,21
-2014,5,Berner Jura,190,öffentliche Schule,10342000,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,2,französisch,63,15,48
-2014,5,Berner Jura,190,öffentliche Schule,10351000,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,2,französisch,12,2,10
-2014,5,Berner Jura,190,öffentliche Schule,10356000,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,2,französisch,19,16,3
+2014,1,Bern-Mittelland,190,öffentliche Schule,1,MAR alte Sprachen,3,gymnasiale Maturität,1,deutsch,116,113,3
+2014,1,Bern-Mittelland,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,50,11,39
+2014,1,Bern-Mittelland,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,125,78,47
+2014,1,Bern-Mittelland,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,133,72,61
+2014,1,Bern-Mittelland,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,189,93,96
+2014,1,Bern-Mittelland,190,öffentliche Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,86,65,21
+2014,1,Bern-Mittelland,190,öffentliche Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,50,39,11
+2014,1,Bern-Mittelland,190,öffentliche Schule,8,MAR Musik,3,gymnasiale Maturität,1,deutsch,38,17,21
+2014,1,Bern-Mittelland,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,120,10,110
+2014,1,Bern-Mittelland,190,öffentliche Schule,10,Berufsmaturität I - gestalterische Richtung,1,Berufsmaturität I,1,deutsch,15,7,8
+2014,1,Bern-Mittelland,190,öffentliche Schule,11,Berufsmaturität I - gewerbliche Richtung,1,Berufsmaturität I,1,deutsch,29,23,6
+2014,1,Bern-Mittelland,190,öffentliche Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,112,16,96
+2014,1,Bern-Mittelland,190,öffentliche Schule,13,Berufsmaturität II - gestalterische Richtung,2,Berufsmaturität II,1,deutsch,42,25,17
+2014,1,Bern-Mittelland,190,öffentliche Schule,14,Berufsmaturität II - gewerbliche Richtung,2,Berufsmaturität II,1,deutsch,26,10,16
+2014,1,Bern-Mittelland,190,öffentliche Schule,15,Berufsmaturität II - naturwissenschaftliche Richtung,2,Berufsmaturität II,1,deutsch,43,19,24
+2014,1,Bern-Mittelland,190,öffentliche Schule,16,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,113,92,21
+2014,1,Bern-Mittelland,190,öffentliche Schule,17,Passerelle Berufsmaturität - UH,4,Passerelle,1,deutsch,77,33,44
+2014,1,Bern-Mittelland,191,private Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,23,11,12
+2014,1,Bern-Mittelland,191,private Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,5,1,4
+2014,1,Bern-Mittelland,191,private Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,45,19,26
+2014,1,Bern-Mittelland,191,private Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,45,14,31
+2014,1,Bern-Mittelland,191,private Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,60,30,30
+2014,1,Bern-Mittelland,191,private Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,23,11,12
+2014,1,Bern-Mittelland,191,private Schule,8,MAR Musik,3,gymnasiale Maturität,1,deutsch,14,10,4
+2014,1,Bern-Mittelland,191,private Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,166,91,75
+2014,1,Bern-Mittelland,191,private Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,21,4,17
+2014,1,Bern-Mittelland,191,private Schule,19,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,284,158,126
+2014,1,Bern-Mittelland,191,private Schule,16,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,19,13,6
+2014,1,Bern-Mittelland,191,private Schule,17,Passerelle Berufsmaturität - UH,4,Passerelle,1,deutsch,10,6,4
+2014,2,Biel-Seeland,190,öffentliche Schule,1,MAR alte Sprachen,3,gymnasiale Maturität,2,französisch,4,3,1
+2014,2,Biel-Seeland,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,27,24,3
+2014,2,Biel-Seeland,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,2,französisch,45,37,8
+2014,2,Biel-Seeland,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,3,deutsch/französisch,16,13,3
+2014,2,Biel-Seeland,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,13,2,11
+2014,2,Biel-Seeland,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,2,französisch,15,2,13
+2014,2,Biel-Seeland,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,3,deutsch/französisch,12,2,10
+2014,2,Biel-Seeland,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,32,18,14
+2014,2,Biel-Seeland,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,2,französisch,21,10,11
+2014,2,Biel-Seeland,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,3,deutsch/französisch,19,14,5
+2014,2,Biel-Seeland,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,21,12,9
+2014,2,Biel-Seeland,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,2,französisch,21,9,12
+2014,2,Biel-Seeland,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,3,deutsch/französisch,12,5,7
+2014,2,Biel-Seeland,190,öffentliche Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,33,28,5
+2014,2,Biel-Seeland,190,öffentliche Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,2,französisch,11,10,1
+2014,2,Biel-Seeland,190,öffentliche Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,14,12,2
+2014,2,Biel-Seeland,190,öffentliche Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,2,französisch,15,11,4
+2014,2,Biel-Seeland,190,öffentliche Schule,8,MAR Musik,3,gymnasiale Maturität,1,deutsch,13,9,4
+2014,2,Biel-Seeland,190,öffentliche Schule,8,MAR Musik,3,gymnasiale Maturität,2,französisch,4,2,2
+2014,2,Biel-Seeland,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,41,10,31
+2014,2,Biel-Seeland,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,2,französisch,13,8,5
+2014,2,Biel-Seeland,190,öffentliche Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,27,12,15
+2014,2,Biel-Seeland,190,öffentliche Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,2,französisch,11,5,6
+2014,2,Biel-Seeland,190,öffentliche Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,65,18,47
+2014,2,Biel-Seeland,190,öffentliche Schule,14,Berufsmaturität II - gewerbliche Richtung,2,Berufsmaturität II,1,deutsch,32,14,18
+2014,2,Biel-Seeland,190,öffentliche Schule,17,Passerelle Berufsmaturität - UH,4,Passerelle,2,französisch,12,6,6
+2014,2,Biel-Seeland,191,private Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,27,15,12
+2014,2,Biel-Seeland,191,private Schule,19,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,30,14,16
+2014,2,Biel-Seeland,191,private Schule,19,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,2,französisch,8,2,6
+2014,3,Oberland,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,53,46,7
+2014,3,Oberland,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,39,12,27
+2014,3,Oberland,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,76,40,36
+2014,3,Oberland,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,44,14,30
+2014,3,Oberland,190,öffentliche Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,41,37,4
+2014,3,Oberland,190,öffentliche Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,37,33,4
+2014,3,Oberland,190,öffentliche Schule,8,MAR Musik,3,gymnasiale Maturität,1,deutsch,37,26,11
+2014,3,Oberland,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,34,3,31
+2014,3,Oberland,190,öffentliche Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,11,7,4
+2014,3,Oberland,190,öffentliche Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,56,1,55
+2014,3,Oberland,191,private Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,34,15,19
+2014,3,Oberland,191,private Schule,19,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,99,60,39
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,1,MAR alte Sprachen,3,gymnasiale Maturität,1,deutsch,24,23,1
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,2,MAR eine moderne Sprache,3,gymnasiale Maturität,1,deutsch,18,7,11
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,3,MAR Physik und Anwendungen der Mathematik,3,gymnasiale Maturität,1,deutsch,50,31,19
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,4,MAR Biologie und Chemie,3,gymnasiale Maturität,1,deutsch,30,18,12
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,5,MAR Wirtschaft und Recht,3,gymnasiale Maturität,1,deutsch,76,40,36
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,6,"MAR Philosophie, Pädagogik, Psychologie",3,gymnasiale Maturität,1,deutsch,28,21,7
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,7,MAR bildnerisches Gestalten,3,gymnasiale Maturität,1,deutsch,31,24,7
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,8,MAR Musik,3,gymnasiale Maturität,1,deutsch,8,1,7
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,1,deutsch,28,4,24
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,1,deutsch,61,37,24
+2014,4,Emmetal-Oberaargau,190,öffentliche Schule,16,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,1,deutsch,19,15,4
+2014,4,Emmetal-Oberaargau,191,private Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,1,deutsch,35,27,8
+2014,4,Emmetal-Oberaargau,191,private Schule,19,Berufsmaturität II - kaufmännische Richtung,2,Berufsmaturität II,1,deutsch,15,1,14
+2014,5,Berner Jura,190,öffentliche Schule,9,Berufsmaturität I - technische Richtung,1,Berufsmaturität I,2,französisch,118,97,21
+2014,5,Berner Jura,190,öffentliche Schule,18,Berufsmaturität I - kaufmännische Richtung,1,Berufsmaturität I,2,französisch,63,15,48
+2014,5,Berner Jura,190,öffentliche Schule,12,Berufsmaturität II - technische Richtung,2,Berufsmaturität II,2,französisch,12,2,10
+2014,5,Berner Jura,190,öffentliche Schule,16,Berufsmaturität II - gesundheitliche und soziale Richtung,2,Berufsmaturität II,2,französisch,19,16,3
