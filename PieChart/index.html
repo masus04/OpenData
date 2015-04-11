@@ -20,6 +20,7 @@ form {
 }
 
 </style>
+
 <form>
   <label><input type="radio" name="dataset" value="Geschlecht" checked> Geschlecht</label>
   <label><input type="radio" name="dataset" value="Sprache"> Sprache</label>
@@ -35,24 +36,21 @@ var width = 960,
 
 var color = d3.scale.category20();
 
+/*var regionsTotal = new Array(5);
+    
+d3.csv("VisualisierungsDaten_final.csv", function(error, data) {
+    var i = data.Verwaltungsregion_Code;
+    regionsTotal[i] += data.Anzahl_Total;
+}); */
+    
 var pie = d3.layout.pie()
     .value(function(d) {
-        var region = d.Verwaltungsregion_Code;
-        var total = d.Anzahl_Total;
-        
-       
-        
-        var regionsTotal = new Array(5);
-        var regionCode = 1;
-        
-        for (int i = 0; i< region.size; i++){
-            regionsTotal[region[[i]]-1] += total[[i]];
-        }
-        
+        /*return d.filter(function(set) {
+        return set.Verwaltungsregion_Code == 1;
+        });*/
+        /*return d.Verwaltungsregion_Code;/**/
         return regionsTotal;
-        
-        })
-    .sort(null);
+    });
 
 var arc = d3.svg.arc()
     .innerRadius(radius - 100)
@@ -64,6 +62,8 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+    // !!!!! IMPORTANT !!!!! //
+// runs asynchronous -> all dependent data must be used inside the functions body. 
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, data) {
   var path = svg.datum(data).selectAll("path")
       .data(pie)
@@ -90,16 +90,24 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, data) {
   function change() {
     var value = this.value;
     clearTimeout(timeout);
+    TODO:
     pie.value(function(d) { return d[value]; }); // change the value function
     path = path.data(pie); // compute the new angles
     path.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
   }
 });
 
+// callback function for d3.csv.
+// usually 'string' is assumed, all other types must be converted here, once for each row in the .csv that does not contain 'string's.
 function type(d) {
-  d.Geschlecht = +d.Geschlecht || 0;
-  d.Sprache = +d.Sprache || 0;
-  return d;
+    d.Jahr = +Jahr; // convert to int
+    d.Träger_Code = +Träger_Code;
+    d.Bildungsart_Code = +Bildungsart_Code;
+    d.Typ_Code = +Typ_Code;
+    d.Unterrichtssprache_Code = +Unterrichtssprache_Code;
+    d.Anzahl_Total = +Anzahl_Total;
+    d.Anzahl_Frauen = +Anzahl_Frauen;
+    d.Anzahl_Männer = +Anzahl_Männer;
 }
 
 // Store the displayed angles in _current.
