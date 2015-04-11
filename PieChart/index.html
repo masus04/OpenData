@@ -22,8 +22,12 @@
 </style>
 
 <form>
-  <label><input type="radio" name="dataset" value="apples" checked> Apples</label>
-  <label><input type="radio" name="dataset" value="oranges"> Oranges</label>
+    <div id="selector">
+        <label><input type="radio" name="dataset" id="Region" value="Region" checked> Region</label>
+        <label><input type="radio" name="dataset" id="Schwerpunktfach" value="Schwerpunktfach"> Schwerpunktfach</label>
+        <label><input type="radio" name="dataset" id="Geschlecht"  value="Geschlecht"> Geschlecht</label>
+        <label><input type="radio" name="dataset" id="Sprache"  value="Sprache"> Sprache</label>   
+    </div>
 </form>
 
 <script src="http://d3js.org/d3.v3.min.js"></script>
