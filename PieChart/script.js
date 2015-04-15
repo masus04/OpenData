@@ -2,7 +2,10 @@ var width = 960,
     height = 500,
     radius = Math.min(width, height) / 2;
 
-var color = d3.scale.category20();
+//var color = d3.scale.category20();
+var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"]
+
+var selector = "Geschlecht"
 
 var pie = d3.layout.pie()
     .value(function(d) {
@@ -24,39 +27,60 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
     data = d
     
     init()
-    console.log(displayData);
     
     d3.selectAll("input")
         .on("change", change);
     
     function change() {
-        calculateDisplayData();
+        calculateDisplayData(selector);
         path = svg.datum(displayData).selectAll("path").data(pie);
+        path.attr("fill", function(d, i) { return calcColor(i); })
         path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
     }
 });
 
-function color(i, numShades){
-    return d3.rgb(color(i)).darker(numShades - (numShades/2))
+function calcColor(n){
+    var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
+    var shades = getNoShades(selector)
+    
+    var colors = new Array()
+    
+    for (var i=0; i<10; i++){
+        colors.push(d3.hsl(color[i]).toString())
+        
+        for (var j=1; j<=shades; j++)
+            colors.push(d3.hsl(color[i]).brighter(j/shades*0.85).toString())
+    }
+    
+    return colors[n]
 }
 
-var colorTest = new Array().push(color)
+function getNoShades(sel){
+    switch (sel) {
+        case "Region":
+            return 4;
+            break;
+        case "Schwerpunktfach":
+            return 19;
+            break;
+        case "Sprache":
+            return 2;
+            break;
+        case "Geschlecht":
+            return 1;
+            break;
+    }
+}
 
 function init(){
-    calculateDisplayData();
+    calculateDisplayData(selector);
     
     path = svg.datum(displayData).selectAll("path")
         .data(pie);
     
-    //update
-    path
-        .attr("fill", function(d, i) { return color(i); })
-        .attr("d", arc)
-        .each(function(d) { this._current = d; }); // store the initial angles
-    
     //enter
     path.enter().append("path")
-        .attr("fill", function(d, i) { return color(i); })
+        .attr("fill", function(d, i) { return calcColor(i); })
         .attr("d", arc)
         .each(function(d) { this._current = d; }); // store the initial angles
     
@@ -65,8 +89,26 @@ function init(){
     
 }
 
-function calculateDisplayData() {
-    calculateTotalDisplay()
+function calculateDisplayData(sel) {
+    switch (sel) {
+        case "Region":
+            calculateRegionDisplay()
+            break;
+        case "Schwerpunktfach":
+            calculateSPFDisplay()
+            break;
+        case "Sprache":
+            calculateSpracheDisplay()
+            break;
+        case "Geschlecht":
+            calculateGeschlechtDisplay()
+            break;
+        default:
+            calculateTotalDisplay()
+            break;
+    }
+    
+    console.log("displayData: " + displayData);
 }
 
 function calculateTotalDisplay(){
@@ -78,9 +120,17 @@ function calculateTotalDisplay(){
         });
     }
     
-    if (document.getElementById("Schwerpunktfach").checked){
+    if (document.getElementById("Gymnasium").checked){
         data.forEach(function(entry) {
-            displayData[entry.Bildungsart_Code - 1] += entry.Anzahl_Total
+            if (entry.Bildungsart_Code < 9)
+                displayData[entry.Bildungsart_Code - 1] += entry.Anzahl_Total
+        });
+    }
+    
+    if (document.getElementById("Berufsmatur").checked){
+        data.forEach(function(entry) {
+            if (entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19)
+                displayData[entry.Bildungsart_Code - 9] += entry.Anzahl_Total
         });
     }
     
@@ -116,9 +166,17 @@ function calculateSpracheDisplay(){
             });
     }
     
-    if (document.getElementById("Schwerpunktfach").checked){
+    if (document.getElementById("Gymnasium").checked){
             data.forEach(function(entry) {
-                displayData[(entry.Bildungsart_Code-1)*3 + entry.Unterrichtssprache_Code - 1] += entry.Anzahl_Total
+                if(entry.Bildungsart_Code < 9)
+                    displayData[(entry.Bildungsart_Code-1)*3 + entry.Unterrichtssprache_Code - 1] += entry.Anzahl_Total
+            });
+    }
+    
+    if (document.getElementById("Berufsmatur").checked){
+            data.forEach(function(entry) {
+                if(entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19)
+                    displayData[(entry.Bildungsart_Code-9)*3 + entry.Unterrichtssprache_Code - 1] += entry.Anzahl_Total
             });
     }
     
@@ -149,10 +207,21 @@ function calculateGeschlechtDisplay(){
         });
     }
     
-    if (document.getElementById("Schwerpunktfach").checked){
+    if (document.getElementById("Gymnasium").checked){
         data.forEach(function(entry) {
-            displayDataMale[entry.Bildungsart_Code - 1] += entry.Anzahl_Männer
-            displayDataFemale[entry.Bildungsart_Code - 1] += entry.Anzahl_Frauen
+            if (entry.Bildungsart_Code < 9){
+                displayDataMale[entry.Bildungsart_Code - 1] += entry.Anzahl_Männer
+                displayDataFemale[entry.Bildungsart_Code - 1] += entry.Anzahl_Frauen
+            }
+        });
+    }
+    
+    if (document.getElementById("Berufsmatur").checked){
+        data.forEach(function(entry) {
+            if (entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19){
+                displayDataMale[entry.Bildungsart_Code - 9] += entry.Anzahl_Männer
+                displayDataFemale[entry.Bildungsart_Code - 9] += entry.Anzahl_Frauen
+            }
         });
     }
     
