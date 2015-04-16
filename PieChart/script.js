@@ -1,11 +1,12 @@
-var width = 960,
-    height = 500,
+var width = 1200,
+    height = 800,
     radius = Math.min(width, height) / 2;
 
 //var color = d3.scale.category20();
 var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"]
 
 var selector = "Geschlecht"
+var pieSize = 75
 
 var pie = d3.layout.pie()
     .value(function(d) {
@@ -16,17 +17,17 @@ var pie = d3.layout.pie()
 var pies = new Array;
 
 // constructor for pie class
-function Pie(rOut, sel, p){
-    this.radius = rOut;
+function Pie(rInner, sel, p){
+    this.radius = rInner;
     this.selector =  sel;
     
     this.pie = p;
     this.arc = d3.svg.arc()
-        .innerRadius(radius - 100)
-        .outerRadius(radius - 20);
+        .innerRadius(this.radius)
+        .outerRadius(this.radius + pieSize);
 }
-
-pies.push(new Pie(radius, selector, pie))
+for (var i=0; i<5; i++)
+    pies.push(new Pie(pieSize + i*pieSize, selector, pie))
 
 var arc = d3.svg.arc()
     .innerRadius(radius - 100)
