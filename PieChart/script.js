@@ -1,11 +1,7 @@
 var width = 1200,
     height =800,
-    radius = Math.min(width, height) / 2;
+    color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"];
 
-//var color = d3.scale.category20();
-var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"]
-
-var selector = "Geschlecht"
 var pieSize = 50
 var numPies = 5
 
@@ -19,13 +15,18 @@ var pies = new Array;
 
 // constructor for pie class
 function Pie(rInner, sel, p){
-    this.radius = rInner;
     this.selector =  sel;
     
     this.pie = p;
     this.arc = d3.svg.arc()
-        .innerRadius(this.radius)
-        .outerRadius(this.radius + pieSize);
+        .innerRadius(rInner)
+        .outerRadius(rInner + pieSize);
+    
+    this.setRadius = function(ri, ro){
+        this.arc = d3.svg.arc()
+        .innerRadius(ri)
+        .outerRadius(ro);
+    }
 }
 for (var i=0; i<numPies; i++)
     pies.push(new Pie(pieSize + i*pieSize, getSelector(i), pie))
@@ -36,25 +37,21 @@ function getSelector(i){
             return "Region"
             break;
         case 1:
-            return "Gymnasium"
-            break;
-        case 2:
-            return "Berufsatur"
-            break;
-        case 3:
             return "Sprache"
             break;
-        case 4:
+        case 2:
             return "Geschlecht"
+            break;
+        case 3:
+            return "Gymnasium"
+            break;
+        case 4:
+            return "Berufsmatur"
             break;
     }
     
     //return "Berufsmatur"
 }
-    
-var arc = d3.svg.arc()
-    .innerRadius(radius - 100)
-    .outerRadius(radius - 20);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -73,21 +70,12 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
         path = svg.datum(displayData).selectAll("path.ring"+index)
             .data(pies[index].pie);
         
-        // need to add several paths, pies, whatever..
         path.enter().append("path")
             .attr('class', 'ring'+index)
             .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
             .attr("d", pies[index].arc)
             .attr("data-index", index )
             .each(function(d) { this._current = d; });  // store the initial angles
-        
-        /*path.enter().append("path")
-            .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
-            .attr("d", pies[1].arc)
-            .each(function(d) { this._current = d; });  // store the initial angles
-        */
-    
-        
     }
     
         d3.selectAll("input")
@@ -96,6 +84,9 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
     
     
         function change() {
+            
+            adjustRadii();
+            
             for (var index=0; index<numPies; index++){ 
                 calculateDisplayData(pies[index].selector);
                 path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
@@ -105,6 +96,37 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
         }
     
 });
+
+function adjustRadii(){
+    
+    if (document.getElementById("Region").checked){
+        resetRadii()
+    }
+    
+    if (document.getElementById("Sprache").checked){
+        resetRadii()
+    }
+    
+    if (document.getElementById("Geschlecht").checked){
+        resetRadii()
+    }
+    
+    if (document.getElementById("Gymnasium").checked){
+        resetRadii()
+            pies[4].setRadius(5*pieSize, 5*pieSize)
+    }
+    
+    if (document.getElementById("Berufsmatur").checked){
+        resetRadii()
+            pies[3].setRadius(4*pieSize, 4*pieSize)
+            pies[4].setRadius(4*pieSize, 5*pieSize)
+    }
+}
+
+function resetRadii(){
+    for (var i=0; i<numPies; i++)
+        pies[i].setRadius(pieSize + i*pieSize, 2*pieSize + i*pieSize)
+}
 
 var currentIndex = 0;
 
@@ -169,7 +191,7 @@ function calculateDisplayData(sel) {
     else
         calculateDisplayedData(sel)
     
-    console.log("Selector: " + sel + " displayData: " + displayData);
+    //console.log("Selector: " + sel + " displayData: " + displayData);
 }
 
 function calculateDisplayedData(sel){    
@@ -185,26 +207,33 @@ function calculateDisplayedData(sel){
     if (document.getElementById("Region").checked){
         data.forEach(function(entry) {
             if (flag(entry)){
-                //console.log(entry[])
                 displayData[(entry.Verwaltungsregion_Code-1)*mult + (entry[code] - sub)] += entry.Anzahl_Total
             }
         });
     }
     
     if (document.getElementById("Gymnasium").checked){
-        data.forEach(function(entry) {
-            if (flag(entry) && entry.Bildungsart_Code < 9 ){
-                displayData[(entry.Bildungsart_Code-1)*mult + entry[code] - sub] += entry.Anzahl_Total
-            }
-        });
+        if (sel == "Berufsmatur")
+            displayData[0] =1;
+        
+        else 
+            data.forEach(function(entry) {
+                if (entry.Bildungsart_Code < 9 ){
+                    displayData[(entry.Bildungsart_Code-1)*mult + entry[code] - sub] += entry.Anzahl_Total
+                }
+            });
     }
     
     if (document.getElementById("Berufsmatur").checked){
+        if (sel == "Gymnasium")
+            displayData[0] =1;
+        
+        else 
             data.forEach(function(entry) {
-                if (flag(entry) && entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19){
+                if (entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19){
                     displayData[(entry.Bildungsart_Code-9)*mult + entry[code] - sub] += entry.Anzahl_Total
-            };
-        });
+                };
+            });
     }
     
     if (document.getElementById("Sprache").checked){
@@ -268,7 +297,7 @@ function calculateGeschlechtDisplay(){
     if (document.getElementById("Geschlecht").checked){
         data.forEach(function(entry) {
             displayData[0] += entry.Anzahl_Männer
-            displayData[1] += entry.Anzahl_Frauen
+            displayData[2] += entry.Anzahl_Frauen
         });
     }
 }
@@ -320,7 +349,7 @@ function setSub(sel){
         return 1;
 }
 
-function setFlagFunction(){
+function setFlagFunction(selector){
     if (selector == "Gymnasium"){
         return function(entry){return (entry.Bildungsart_Code < 9)}
     }
