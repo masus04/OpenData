@@ -1,12 +1,13 @@
 var width = 1200,
-    height = 800,
+    height =800,
     radius = Math.min(width, height) / 2;
 
 //var color = d3.scale.category20();
 var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"]
 
 var selector = "Geschlecht"
-var pieSize = 75
+var pieSize = 50
+var numPies = 5
 
 var pie = d3.layout.pie()
     .value(function(d) {
@@ -26,9 +27,31 @@ function Pie(rInner, sel, p){
         .innerRadius(this.radius)
         .outerRadius(this.radius + pieSize);
 }
-for (var i=0; i<5; i++)
-    pies.push(new Pie(pieSize + i*pieSize, selector, pie))
+for (var i=0; i<numPies; i++)
+    pies.push(new Pie(pieSize + i*pieSize, getSelector(i), pie))
 
+function getSelector(i){
+    switch (i) {
+        case 0:
+            return "Region"
+            break;
+        case 1:
+            return "Gymnasium"
+            break;
+        case 2:
+            return "Berufsatur"
+            break;
+        case 3:
+            return "Sprache"
+            break;
+        case 4:
+            return "Geschlecht"
+            break;
+    }
+    
+    //return "Berufsmatur"
+}
+    
 var arc = d3.svg.arc()
     .innerRadius(radius - 100)
     .outerRadius(radius - 20);
@@ -42,29 +65,60 @@ var svg = d3.select("body").append("svg")
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {    
     data = d;
     
+    for (var index=0; index<numPies; index++){
+    
     // init
-    calculateDisplayData(pies[0].selector);
+        calculateDisplayData(pies[index].selector);
     
-    path = svg.datum(displayData).selectAll("path")
-        .data(pies[0].pie);
+        path = svg.datum(displayData).selectAll("path.ring"+index)
+            .data(pies[index].pie);
+        
+        // need to add several paths, pies, whatever..
+        path.enter().append("path")
+            .attr('class', 'ring'+index)
+            .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
+            .attr("d", pies[index].arc)
+            .attr("data-index", index )
+            .each(function(d) { this._current = d; });  // store the initial angles
+        
+        /*path.enter().append("path")
+            .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
+            .attr("d", pies[1].arc)
+            .each(function(d) { this._current = d; });  // store the initial angles
+        */
     
-    path.enter().append("path")
-        .attr("fill", function(d, i) { return calcColor(i, pies[0].selector); })
-        .attr("d", pies[0].arc)
-        .each(function(d) { this._current = d; }); // store the initial angles
-    
-    d3.selectAll("input")
-        .on("change", change);
-    // end init
-    
-    
-    function change() {
-        calculateDisplayData(pies[0].selector);
-        path = svg.datum(displayData).selectAll("path").data(pies[0].pie);
-        path.attr("fill", function(d, i) { return calcColor(i, pies[0].selector); })
-        path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
+        
     }
+    
+        d3.selectAll("input")
+            .on("change", change);
+        // end init
+    
+    
+        function change() {
+            for (var index=0; index<numPies; index++){ 
+                calculateDisplayData(pies[index].selector);
+                path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
+                path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
+                path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
+            }
+        }
+    
 });
+
+var currentIndex = 0;
+
+// Store the displayed angles in _current.
+// Then, interpolate from _current to the new angles.
+// During the transition, _current is updated in-place by d3.interpolate.
+function arcTween(a) {
+    var index = parseInt( d3.select(this).attr('data-index') );
+    var i = d3.interpolate(this._current, a);
+    this._current = i(0);
+    return function(t) {
+        return pies[index].arc(i(t));
+    };
+}
 
 function calcColor(n, selector){
     var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
@@ -115,7 +169,7 @@ function calculateDisplayData(sel) {
     else
         calculateDisplayedData(sel)
     
-    console.log("displayData: " + displayData);
+    console.log("Selector: " + sel + " displayData: " + displayData);
 }
 
 function calculateDisplayedData(sel){    
@@ -123,9 +177,7 @@ function calculateDisplayedData(sel){
     var mult = setMult(sel)
     var sub = setSub(sel)
     var flag = setFlagFunction(sel)
-    
-    console.log("code: " + code + " mult: " + mult + " sub: " + sub + " flag: " + flag)
-    
+     
     displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
@@ -290,17 +342,6 @@ function type(d) {
   d.Anzahl_Frauen = Number(d.Anzahl_Frauen)
   d.Anzahl_Männer = Number(d.Anzahl_Männer)
   return d;
-}
-
-// Store the displayed angles in _current.
-// Then, interpolate from _current to the new angles.
-// During the transition, _current is updated in-place by d3.interpolate.
-function arcTween(a) {
-  var i = d3.interpolate(this._current, a);
-  this._current = i(0);
-  return function(t) {
-    return pies[0].arc(i(t));
-  };
 }
 
 //              *****       ******         *****               //
