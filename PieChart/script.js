@@ -62,9 +62,9 @@ var svg = d3.select("body").append("svg")
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {    
     data = d;
     
+    // init
     for (var index=0; index<numPies; index++){
     
-    // init
         calculateDisplayData(pies[index].selector);
     
         path = svg.datum(displayData).selectAll("path.ring"+index)
@@ -76,24 +76,36 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .attr("d", pies[index].arc)
             .attr("data-index", index )
             .each(function(d) { this._current = d; });  // store the initial angles
+        //console.log(d3.select(this).attr("data-index"))
+        
+        // ********** Tooltip ********** //
+        
+        path.on("mouseover", function(d) {
+            
+        });
+            
+        path.on("mouseout", function(d) {
+        
+        });
+        
     }
     
-        d3.selectAll("input")
-            .on("change", change);
-        // end init
+    d3.selectAll("input")
+        .on("change", change);
+    // end init
     
     
-        function change() {
+    function change() {
             
-            adjustRadii();
+        adjustRadii();
             
-            for (var index=0; index<numPies; index++){ 
-                calculateDisplayData(pies[index].selector);
-                path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
-                path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
-                path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
-            }
+        for (var index=0; index<numPies; index++){ 
+            calculateDisplayData(pies[index].selector);
+            path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
+            path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
+            path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
         }
+    }
     
 });
 
@@ -374,13 +386,30 @@ function type(d) {
 }
 
 
-// **************************** //
-// ********** Legend ********** //
-// **************************** //
+// ***************************** //
+// ********** Tooltip ********** //
+// ***************************** //
 
+var tooltip = d3.select("body")
+  .append('div')
+  .attr('class', 'tooltip');
 
+tooltip.append('div')
+  .attr('class', 'label');
 
+tooltip.append('div')
+  .attr('class', 'count');
 
+tooltip.append('div')
+  .attr('class', 'percent');
+
+function printTooltip(){
+    //console.log(d3.select(this)).attr("data-index"))
+    //var index = parseInt( d3.select(this).attr('data-index') );
+    //console.log("index: " + index)
+    //var label = pies[index].selector
+    
+}
 
 
 
