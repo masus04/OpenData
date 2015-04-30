@@ -28,6 +28,7 @@ function Pie(rInner, sel, p){
         .outerRadius(ro);
     }
 }
+
 for (var i=0; i<numPies; i++)
     pies.push(new Pie(pieSize + i*pieSize, getSelector(i), pie))
 
@@ -75,20 +76,20 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
             .attr("d", pies[index].arc)
             .attr("data-index", index )
-            .each(function(d) { this._current = d; });  // store the initial angles
-        
-        //console.log(d3.select(this).attr("data-index"))
-        
-        // ********** Tooltip ********** //
-        
-        path.on("mouseover", function(d) {
+            .each(function(d) { this._current = d; })  // store the initial angles
             
-        });
+            // ********** Tooltip ********** //
+        
+            .on("mouseover", function(d) {
+                var index = d3.select(this).attr('data-index');
+                printTooltip(index);
+                
+                console.log(index);
+            })
             
-        path.on("mouseout", function(d) {
+            .on("mouseout", function(d) {
         
-        });
-        
+            });
     }
     
     d3.selectAll("input")
@@ -97,7 +98,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
     
     
     function change() {
-            
+        
         adjustRadii();
             
         for (var index=0; index<numPies; index++){ 
@@ -404,10 +405,7 @@ tooltip.append('div')
 tooltip.append('div')
   .attr('class', 'percent');
 
-function printTooltip(){
-    //console.log(d3.select(this)).attr("data-index"))
-    //var index = parseInt( d3.select(this).attr('data-index') );
-    //console.log("index: " + index)
-    //var label = pies[index].selector
+function printTooltip(index){
+    var label = pies[index].selector
     
 }
