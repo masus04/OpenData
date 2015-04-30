@@ -76,6 +76,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .attr("d", pies[index].arc)
             .attr("data-index", index )
             .each(function(d) { this._current = d; });  // store the initial angles
+        
         //console.log(d3.select(this).attr("data-index"))
         
         // ********** Tooltip ********** //
