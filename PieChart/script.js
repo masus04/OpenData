@@ -75,7 +75,12 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
             .attr("d", pies[index].arc)
             .attr("data-index", index )
-            .each(function(d) { this._current = d; });  // store the initial angles
+            .each(function(d) { this._current = d; })
+            .on('mouseover', function(d){
+                console.log(arguments, this);
+                var index = d3.select(this).attr('data-index');
+                console.log(index);
+            });  // store the initial angles
     }
     
         d3.selectAll("input")
