@@ -1,9 +1,18 @@
-var width = 960,
-    height =800,
-    color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"];
+var windowWidth = window.innerWidth,
+    width = windowWidth/2,
+    height = windowWidth/2,
+    color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"],
+    checked = "none";
+
+d3.select("body").attr("width", width)
+d3.select("svg").attr("width", "100%")
+
+var windowWidth = window.innerWidth
 
 var pieSize = 50
 var numPies = 5
+
+var displayDataList = new Array(numPies)
 
 var pie = d3.layout.pie()
     .value(function(d) {
@@ -54,7 +63,30 @@ function getSelector(i){
     //return "Berufsmatur"
 }
 
-var svg = d3.select("body").append("svg")
+// ********** Tooltip ********** //
+
+var tooltip = d3.select("body")
+  .append('div')
+  .attr('class', 'tooltip');
+
+tooltip.append('div')
+  .attr('class', 'label')
+
+tooltip.append('div')
+  .attr('class', 'total');
+
+tooltip.append('div')
+  .attr('class', 'specifier');
+
+tooltip.append('div')
+  .attr('class', 'count');
+
+tooltip.append('div')
+  .attr('class', 'percent');
+
+// ********** Tooltip ********** //
+
+var svg = d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height)
   .append("g")
@@ -65,8 +97,8 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
     
     // init
     for (var index=0; index<numPies; index++){
-    
-        calculateDisplayData(pies[index].selector);
+        
+        displayDataList[index] = calculateDisplayData(pies[index].selector);
     
         path = svg.datum(displayData).selectAll("path.ring"+index)
             .data(pies[index].pie);
@@ -76,19 +108,37 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .attr("fill", function(d, i) { return calcColor(i, pies[index].selector); })
             .attr("d", pies[index].arc)
             .attr("data-index", index )
-            .each(function(d) { this._current = d; })  // store the initial angles
+            .each(function(d) { this._current = d;})  // store the initial angles
             
             // ********** Tooltip ********** //
         
-            .on("mouseover", function(d) {
+            .on("mouseover", function(d) {            
+            
+                checkInput()
                 var index = d3.select(this).attr('data-index');
-                printTooltip(index);
+                var selector = pies[index].selector
+            
+                var displayIndex = -1
                 
-                console.log(index);
+                for (var i=0; i<100; i++){
+                    if (d3.select(this).attr("fill") == calcColor(i, pies[index].selector))
+                        displayIndex = i
+                }
+                
+                var count = displayDataList[index][displayIndex]
+                //console.log(displayDataList[index])
+                
+                tooltip.select('.label').html(checked + " Bern")
+                tooltip.select('.total').html("Total Abschlüsse: ")
+                tooltip.select('.specifier').html(selector + ": insert here")
+                tooltip.select('.count').html("Anzahl Abschlüsse: " + displayDataList[index][displayIndex])
+                //tooltip.select('.percent').html(percent + '%'); 
+                tooltip.style('display', 'block');
+            
             })
             
             .on("mouseout", function(d) {
-        
+                tooltip.style('display', 'none');
             });
     }
     
@@ -102,7 +152,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
         adjustRadii();
             
         for (var index=0; index<numPies; index++){ 
-            calculateDisplayData(pies[index].selector);
+            displayDataList[index] = calculateDisplayData(pies[index].selector);
             path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
             path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
             path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
@@ -113,24 +163,26 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
 
 function adjustRadii(){
     
-    if (document.getElementById("Region").checked){
+    checkInput()
+    
+    if (checked == "Region"){
         resetRadii()
     }
     
-    if (document.getElementById("Sprache").checked){
+    if (checked == "Sprache"){
         resetRadii()
     }
     
-    if (document.getElementById("Geschlecht").checked){
+    if (checked == "Geschlecht"){
         resetRadii()
     }
     
-    if (document.getElementById("Gymnasium").checked){
+    if (checked == "Gymnasium"){
         resetRadii()
             pies[4].setRadius(5*pieSize, 5*pieSize)
     }
     
-    if (document.getElementById("Berufsmatur").checked){
+    if (checked == "Berufsmatur"){
         resetRadii()
             pies[3].setRadius(4*pieSize, 4*pieSize)
             pies[4].setRadius(4*pieSize, 5*pieSize)
@@ -200,11 +252,14 @@ function init(){
 }
 
 function calculateDisplayData(sel) {    
+    
     if (sel == "Geschlecht")
         calculateGeschlechtDisplay(sel)
     else
         calculateDisplayedData(sel)
     
+    return displayData
+        
     //console.log("Selector: " + sel + " displayData: " + displayData);
 }
 
@@ -214,11 +269,11 @@ function calculateDisplayedData(sel){
     var sub = setSub(sel)
     var flag = setFlagFunction(sel)
      
-    displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    checkInput()
     
-    if (document.getElementById("Region").checked){
+    if (checked == "Region"){
         data.forEach(function(entry) {
             if (flag(entry)){
                 displayData[(entry.Verwaltungsregion_Code-1)*mult + (entry[code] - sub)] += entry.Anzahl_Total
@@ -226,7 +281,7 @@ function calculateDisplayedData(sel){
         });
     }
     
-    if (document.getElementById("Gymnasium").checked){
+    if (checked == "Gymnasium"){
         if (sel == "Berufsmatur")
             displayData[0] =1;
         
@@ -238,7 +293,7 @@ function calculateDisplayedData(sel){
             });
     }
     
-    if (document.getElementById("Berufsmatur").checked){
+    if (checked == "Berufsmatur"){
         if (sel == "Gymnasium")
             displayData[0] =1;
         
@@ -250,7 +305,7 @@ function calculateDisplayedData(sel){
             });
     }
     
-    if (document.getElementById("Sprache").checked){
+    if (checked == "Sprache"){
         data.forEach(function(entry) {
             if (flag(entry)){
                 displayData[(entry.Unterrichtssprache_Code-1)*mult + entry[code] - sub] += entry.Anzahl_Total
@@ -258,7 +313,7 @@ function calculateDisplayedData(sel){
         });
     }
     
-    if (document.getElementById("Geschlecht").checked){
+    if (checked == "Geschlecht"){
         data.forEach(function(entry) {
             if(flag(entry)){
                 displayData[(entry[code]-sub)] += entry.Anzahl_Männer
@@ -270,11 +325,12 @@ function calculateDisplayedData(sel){
 
 function calculateGeschlechtDisplay(){
     
-    displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     
-    if (document.getElementById("Region").checked){
+    checkInput()
+    
+    if (checked == "Region"){
         data.forEach(function(entry) {
             displayData[(entry.Verwaltungsregion_Code - 1) *2 ] += entry.Anzahl_Männer
             displayData[(entry.Verwaltungsregion_Code - 1) *2 +1] += entry.Anzahl_Frauen
@@ -283,7 +339,7 @@ function calculateGeschlechtDisplay(){
     
     //  displayData[(entry.Verwaltungsregion_Code-1)*3 + (entry.Unterrichtssprache_Code - 1)] += entry.Anzahl_Total
     
-    if (document.getElementById("Gymnasium").checked){
+    if (checked == "Gymnasium"){
         data.forEach(function(entry) {
             if (entry.Bildungsart_Code < 9){
                 displayData[(entry.Bildungsart_Code - 1) *2 ] += entry.Anzahl_Männer
@@ -292,7 +348,7 @@ function calculateGeschlechtDisplay(){
         });
     }
     
-    if (document.getElementById("Berufsmatur").checked){
+    if (checked == "Berufsmatur"){
         data.forEach(function(entry) {
             if (entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19){
                 displayData[(entry.Bildungsart_Code - 9) *2 ] += entry.Anzahl_Männer
@@ -301,14 +357,14 @@ function calculateGeschlechtDisplay(){
         });
     }
     
-    if (document.getElementById("Sprache").checked){
+    if (checked == "Sprache"){
        data.forEach(function(entry) {
             displayData[(entry.Unterrichtssprache_Code - 1) *2 ] += entry.Anzahl_Männer
             displayData[(entry.Unterrichtssprache_Code - 1) *2 +1] += entry.Anzahl_Frauen
         });
     }
     
-    if (document.getElementById("Geschlecht").checked){
+    if (checked == "Geschlecht"){
         data.forEach(function(entry) {
             displayData[0] += entry.Anzahl_Männer
             displayData[2] += entry.Anzahl_Frauen
@@ -387,25 +443,21 @@ function type(d) {
   return d;
 }
 
-
-// ***************************** //
-// ********** Tooltip ********** //
-// ***************************** //
-
-var tooltip = d3.select("body")
-  .append('div')
-  .attr('class', 'tooltip');
-
-tooltip.append('div')
-  .attr('class', 'label');
-
-tooltip.append('div')
-  .attr('class', 'count');
-
-tooltip.append('div')
-  .attr('class', 'percent');
-
-function printTooltip(index){
-    var label = pies[index].selector
-    
+function checkInput(){
+    if (document.getElementById("Region").checked)
+        checked = "Region"
+    else if (document.getElementById("Gymnasium").checked)
+        checked = "Gymnasium"
+    else if (document.getElementById("Berufsmatur").checked)
+        checked = "Berufsmatur"
+    else if (document.getElementById("Sprache").checked)
+        checked = "Sprache"
+    else if (document.getElementById("Geschlecht").checked)
+        checked = "Geschlecht"        
 }
+
+
+
+
+
+
