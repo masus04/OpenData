@@ -4,12 +4,23 @@ var windowWidth = window.innerWidth,
     color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"],
     checked = "none";
 
-d3.select("body").attr("width", width)
-d3.select("svg").attr("width", "100%")
+function setFontSize(fontsize){    
+    var labels = d3.selectAll("label")
+    
+    labels.style("font-size", fontsize+"px")
+    
+    if (d3.select("#selector").node().getBoundingClientRect().height > 2 * fontsize && fontsize > 8)
+        setFontSize(fontsize -1)
+
+    console.log(fontsize)
+}
+
+setFontSize(20)
+
 
 var windowWidth = window.innerWidth
 
-var pieSize = 50
+var pieSize = 50/1500*window.innerWidth
 var numPies = 5
 
 var displayDataList = new Array(numPies)

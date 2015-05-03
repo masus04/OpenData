@@ -6,7 +6,7 @@
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         margin: auto;
         position: relative;
-        width: 960px;
+        width: 50%;
     }
 
     text {
@@ -33,7 +33,12 @@
       z-index: 10;
     }
     
-</style>
+    #selector {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+</style> 
 
 <form>
     <div id="selector">
@@ -42,7 +47,7 @@
         <label><input type="radio" name="dataset" id="Geschlecht"  value="Geschlecht" > Geschlecht</label>
         <label><input type="radio" name="dataset" id="Gymnasium" value="Gymnasium" > Schwerpunktfach Gymnasium</label>
         <label><input type="radio" name="dataset" id="Berufsmatur" value="Berufsmatur" > Schwerpunktfach Berufsmatur</label>
-        </div>
+    </div>
     
     <div id="chart">
     </div>
