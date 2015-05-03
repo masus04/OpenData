@@ -1,6 +1,6 @@
 var windowWidth = window.innerWidth,
-    width = windowWidth/1.5,
-    height = windowWidth,
+    windowWidth = windowWidth/1.5,
+    windowHeight = windowWidth/1.5,
     color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"],
     checked = "none";
 
@@ -14,9 +14,6 @@ function setFontSize(fontsize){
 }
 
 setFontSize(35)
-
-
-var windowWidth = window.innerWidth
 
 var pieSize = 50/1500*window.innerWidth
 var numPies = 5
@@ -98,10 +95,10 @@ tooltip.append('div')
 //d3.select("svg").attr("width", "100%");
 
 var svg = d3.select("#chart").append("svg")
-    .attr("width", width)
-    .attr("height", height)
+    .attr("width", windowWidth)
+    .attr("height", windowHeight)
   .append("g")
-    .attr("transform", "translate(" + width / 3 + "," + height / 4 + ")");
+    .attr("transform", "translate(" + windowWidth / 3 + "," + windowHeight / 2 + ")");
 
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {    
     data = d;
@@ -481,8 +478,8 @@ function checkInput(){
 
 function setupLegend(){
 
-    var legendRectSize = width/25;
-    var legendSpacing = width/100;
+    var legendRectSize = windowWidth/25;
+    var legendSpacing = windowWidth/100;
 
     checkInput()
     var legendArray = createColors(checked, 0).slice(0, getNoShades(checked)+1)
@@ -496,8 +493,8 @@ function setupLegend(){
       .attr('class', 'legend')
       .attr('transform', function(d, i) {
         var height = legendRectSize + legendSpacing;
-        var offset =  height * legendArray.length / 2;
-        var horz = width/2.5;
+        var offset = windowHeight/2.5;//height * legendArray.length / 2;
+        var horz = windowWidth/2.5;
         var vert = i * height - offset;
         return 'translate(' + horz + ',' + vert + ')';
       });
@@ -515,7 +512,7 @@ function setupLegend(){
       .attr('x', legendRectSize + legendSpacing)
       .attr('y', legendRectSize - legendSpacing)
       .text(function(d, i) {return legendText(i, checked)})
-      .style("font-size", Math.round(width/75));
+      .style("font-size", Math.round(windowWidth/75));
 
     
     
