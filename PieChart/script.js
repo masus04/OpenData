@@ -1,6 +1,6 @@
 var windowWidth = window.innerWidth,
-    width = windowWidth/2,
-    height = windowWidth/2,
+    width = windowWidth/1.5,
+    height = windowWidth,
     color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"],
     checked = "none";
 
@@ -11,11 +11,9 @@ function setFontSize(fontsize){
     
     if (d3.select("#selector").node().getBoundingClientRect().height > 2 * fontsize && fontsize > 8)
         setFontSize(fontsize -1)
-
-    console.log(fontsize)
 }
 
-setFontSize(20)
+setFontSize(35)
 
 
 var windowWidth = window.innerWidth
@@ -95,13 +93,15 @@ tooltip.append('div')
 tooltip.append('div')
   .attr('class', 'percent');
 
-// ********** Tooltip ********** //
+// ********** /Tooltip ********** //
+
+//d3.select("svg").attr("width", "100%");
 
 var svg = d3.select("#chart").append("svg")
     .attr("width", width)
     .attr("height", height)
   .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    .attr("transform", "translate(" + width / 3 + "," + height / 4 + ")");
 
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {    
     data = d;
@@ -151,6 +151,8 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .on("mouseout", function(d) {
                 tooltip.style('display', 'none');
             });
+        
+            setupLegend()
     }
     
     d3.selectAll("input")
@@ -168,6 +170,8 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
             path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
         }
+        
+        setupLegend()
     }
     
 });
@@ -220,9 +224,14 @@ function arcTween(a) {
 }
 
 function calcColor(n, selector){
-    var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
     var shades = getNoShades(selector)
+    var colors = createColors(selector, shades)
     
+    return colors[n]
+}
+
+function createColors(selector, shades){
+    var color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"]
     var colors = new Array()
     
     for (var i=0; i<10; i++){
@@ -232,7 +241,7 @@ function calcColor(n, selector){
             colors.push(d3.hsl(color[i]).brighter(j/shades*0.85).toString())
     }
     
-    return colors[n]
+    return colors
 }
 
 function getNoShades(sel){
@@ -468,7 +477,73 @@ function checkInput(){
 }
 
 
+// Legend //
+
+function setupLegend(){
+
+    var legendRectSize = width/25;
+    var legendSpacing = width/100;
+
+    checkInput()
+    var legendArray = createColors(checked, 0).slice(0, getNoShades(checked)+1)
+    
+    svg.selectAll(".legend").remove()
+    
+    var legend = svg.selectAll('.legend')
+      .data(legendArray)
+      .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize + legendSpacing;
+        var offset =  height * legendArray.length / 2;
+        var horz = width/2.5;
+        var vert = i * height - offset;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+    
+    
+
+    legend.append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', function(d, i) {return legendArray[i]})
+      .style('stroke', function(d, i) {return legendArray[i]});
 
 
+    legend.append('text')
+      .attr('x', legendRectSize + legendSpacing)
+      .attr('y', legendRectSize - legendSpacing)
+      .text(function(d, i) {return legendText(i, checked)})
+      .style("font-size", Math.round(width/75));
 
+    
+    
+    function legendText(i, checked){
+
+        var array = new Array();
+
+        switch (checked) {
+            case "Region":
+                array = ["Bern Mittelland", "Biel Seeland", "Oberland", "Emmental-Oberargau", "Berner Jura"]
+                break;
+            case "Sprache":
+                array = ["Deutsch", "Französisch", "Bilingual D/F"]
+                break;
+            case "Geschlecht":
+                array = ["Männlich", "Weiblich"]
+                break;
+            case "Gymnasium":
+                array = ["Alte Sprachen", "moderne Sprache", "Physik & Mathematik", "Biologie & Chemie", "Wirtschaft & Recht", "Philosophie, Pädagogik & Psychologie",
+                         "Bildnerisches Gestalten", "Musik"]
+                break;
+            case "Berufsmatur":
+                array = ["BM I: Technisch", "BM I: Gestalterisch", "BM I: Gewerblich", "BM I: Kaufmännisch", "BM II: Technisch", "BM II: Gestalterisch", "BM II: Gewerblich",
+                         "BM II: Naturwissenschaftlich", "BM II: Gesundheitlich & Sozial", "BM II: Kaufmännisch"]
+                break;
+        }
+
+        return array[i]
+    }
+}
 
