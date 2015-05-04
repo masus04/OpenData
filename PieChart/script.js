@@ -73,16 +73,11 @@ function getSelector(i){
 
 var tooltip = d3.select("body")
   .append('div')
-  .attr('class', 'tooltip');
+  .attr('class', 'tooltip')
+  .attr('id', 'tooltip');
 
 tooltip.append('div')
-  .attr('class', 'label')
-
-tooltip.append('div')
-  .attr('class', 'total');
-
-tooltip.append('div')
-  .attr('class', 'specifier');
+  .attr('class', 'subCathegory')
 
 tooltip.append('div')
   .attr('class', 'count');
@@ -90,6 +85,9 @@ tooltip.append('div')
 tooltip.append('div')
   .attr('class', 'percent');
 
+var tooltip = d3.select(".tooltip")
+    tooltip.style("width", Math.round(windowWidth / 4) + "px")
+    tooltip.selectAll("div").style("font-size", Math.round(windowWidth/75) + "px")
 // ********** /Tooltip ********** //
 
 //d3.select("svg").attr("width", "100%");
@@ -98,7 +96,7 @@ var svg = d3.select("#chart").append("svg")
     .attr("width", windowWidth)
     .attr("height", windowHeight)
   .append("g")
-    .attr("transform", "translate(" + windowWidth / 3 + "," + windowHeight / 2 + ")");
+    .attr("transform", "translate(" + windowWidth / 3 + "," + windowHeight / 2 + ")");      // TODO: translate to mouse position
 
 d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {    
     data = d;
@@ -120,27 +118,25 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             
             // ********** Tooltip ********** //
         
-            .on("mouseover", function(d) {            
+            .on("mouseover", function(d, displayIndex) {
             
                 checkInput()
                 var index = d3.select(this).attr('data-index');
                 var selector = pies[index].selector
-            
-                var displayIndex = -1
-                
-                for (var i=0; i<100; i++){
-                    if (d3.select(this).attr("fill") == calcColor(i, pies[index].selector))
-                        displayIndex = i
-                }
                 
                 var count = displayDataList[index][displayIndex]
                 //console.log(displayDataList[index])
                 
-                tooltip.select('.label').html(checked + " Bern")
-                tooltip.select('.total').html("Total Abschlüsse: ")
-                tooltip.select('.specifier').html(selector + ": insert here")
-                tooltip.select('.count').html("Anzahl Abschlüsse: " + displayDataList[index][displayIndex])
-                //tooltip.select('.percent').html(percent + '%'); 
+                var abschlüsse = getAbschlüsse(index, displayIndex)
+                
+                tooltip.select('.subCathegory').html(pies[index].selector + ": " + getCathegory(index, displayIndex))
+                tooltip.select('.count').html("Abschlüsse absolut : " + abschlüsse)
+                
+                var numCathegories = getNoShades(pies[index].selector) + 1
+                var relative = 100 * abschlüsse / (getTotalAbschlüsse(Math.floor(displayIndex / numCathegories)))
+                
+                tooltip.select('.percent').html("Abschlüsse Relativ: " + relative.toFixed(2) + "%")
+                
                 tooltip.style('display', 'block');
             
             })
@@ -148,6 +144,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
             .on("mouseout", function(d) {
                 tooltip.style('display', 'none');
             });
+        
         
             setupLegend()
     }
@@ -473,6 +470,63 @@ function checkInput(){
         checked = "Geschlecht"        
 }
 
+// Tooltip //
+
+function getCathegory(index, displayIndex){
+    var sel = pies[index].selector
+    var numCathegories = getNoShades(sel)+1
+    return legendText(displayIndex % numCathegories, sel)
+}
+
+function getAbschlüsse(index, displayIndex){
+    return displayDataList[index][displayIndex]
+}
+
+function getTotalAbschlüsse(totalIndex){
+    return calculateTotalAbschlüsse()[totalIndex]
+}
+
+function calculateTotalAbschlüsse(){
+    var totalAbschlüsse = [0,0,0,0,0,0,0,0,0,0]
+    
+    if (checked == "Region"){
+        data.forEach(function(entry) {
+            totalAbschlüsse[(entry.Verwaltungsregion_Code - 1)] += entry.Anzahl_Total
+        });
+    }
+    
+    if (checked == "Gymnasium"){
+        data.forEach(function(entry) {
+            if (entry.Bildungsart_Code < 9){
+                totalAbschlüsse[(entry.Bildungsart_Code - 1)] += entry.Anzahl_Total
+            }
+        });
+    }
+    
+    if (checked == "Berufsmatur"){
+        data.forEach(function(entry) {
+            if (entry.Bildungsart_Code > 8 && entry.Bildungsart_Code < 19){
+                totalAbschlüsse[(entry.Bildungsart_Code - 9)] += entry.Anzahl_Total
+            }
+        });
+    }
+    
+    if (checked == "Sprache"){
+       data.forEach(function(entry) {
+            totalAbschlüsse[(entry.Unterrichtssprache_Code - 1)] += entry.Anzahl_Total
+        });
+    }
+    
+    if (checked == "Geschlecht"){
+        data.forEach(function(entry) {
+            totalAbschlüsse[0] += entry.Anzahl_Männer
+            totalAbschlüsse[1] += entry.Anzahl_Frauen
+        });
+    }
+    
+    return totalAbschlüsse
+    
+}
 
 // Legend //
 
@@ -513,34 +567,31 @@ function setupLegend(){
       .attr('y', legendRectSize - legendSpacing)
       .text(function(d, i) {return legendText(i, checked)})
       .style("font-size", Math.round(windowWidth/75));
-
-    
-    
-    function legendText(i, checked){
-
-        var array = new Array();
-
-        switch (checked) {
-            case "Region":
-                array = ["Bern Mittelland", "Biel Seeland", "Oberland", "Emmental-Oberargau", "Berner Jura"]
-                break;
-            case "Sprache":
-                array = ["Deutsch", "Französisch", "Bilingual D/F"]
-                break;
-            case "Geschlecht":
-                array = ["Männlich", "Weiblich"]
-                break;
-            case "Gymnasium":
-                array = ["Alte Sprachen", "moderne Sprache", "Physik & Mathematik", "Biologie & Chemie", "Wirtschaft & Recht", "Philosophie, Pädagogik & Psychologie",
-                         "Bildnerisches Gestalten", "Musik"]
-                break;
-            case "Berufsmatur":
-                array = ["BM I: Technisch", "BM I: Gestalterisch", "BM I: Gewerblich", "BM I: Kaufmännisch", "BM II: Technisch", "BM II: Gestalterisch", "BM II: Gewerblich",
-                         "BM II: Naturwissenschaftlich", "BM II: Gesundheitlich & Sozial", "BM II: Kaufmännisch"]
-                break;
-        }
-
-        return array[i]
-    }
 }
 
+function legendText(i, sel){
+
+    var array = new Array();
+
+    switch (sel) {
+        case "Region":
+            array = ["Bern Mittelland", "Biel Seeland", "Oberland", "Emmental-Oberargau", "Berner Jura"]
+            break;
+        case "Sprache":
+            array = ["Deutsch", "Französisch", "Bilingual D/F"]
+            break;
+        case "Geschlecht":
+            array = ["Männlich", "Weiblich"]
+            break;
+        case "Gymnasium":
+            array = ["Alte Sprachen", "moderne Sprache", "Physik & Mathematik", "Biologie & Chemie", "Wirtschaft & Recht", "Philosophie, Pädagogik & Psychologie",
+                     "Bildnerisches Gestalten", "Musik"]
+            break;
+        case "Berufsmatur":
+            array = ["BM I: Technisch", "BM I: Gestalterisch", "BM I: Gewerblich", "BM I: Kaufmännisch", "BM II: Technisch", "BM II: Gestalterisch", "BM II: Gewerblich",
+                     "BM II: Naturwissenschaftlich", "BM II: Gesundheitlich & Sozial", "BM II: Kaufmännisch"]
+            break;
+    }
+
+    return array[i]
+}
