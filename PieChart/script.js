@@ -136,9 +136,10 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
                 var relative = 100 * abschlüsse / (getTotalAbschlüsse(Math.floor(displayIndex / numCathegories)))
                 
                 tooltip.select('.percent').html("Abschlüsse Relativ: " + relative.toFixed(2) + "%")
-                
                 tooltip.style('display', 'block');
             
+                tooltip.style("top", "50px")
+                tooltip.style("left", "0px")
             })
             
             .on("mouseout", function(d) {
