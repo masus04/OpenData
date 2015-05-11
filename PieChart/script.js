@@ -2,7 +2,8 @@ var windowWidth = window.innerWidth,
     windowWidth = windowWidth/1.5,
     windowHeight = windowWidth/1.5,
     color = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#636363"],
-    checked = "none";
+    checked = "none",
+    legendChecked = [true,true,true,true,true,true,true,true,true,true];
 
 function setFontSize(fontsize){    
     var labels = d3.selectAll("label")
@@ -125,12 +126,11 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
                 var selector = pies[index].selector
                 
                 var count = displayDataList[index][displayIndex]
-                //console.log(displayDataList[index])
                 
                 var abschlüsse = getAbschlüsse(index, displayIndex)
                 
                 tooltip.select('.subCathegory').html(pies[index].selector + ": " + getCathegory(index, displayIndex))
-                tooltip.select('.count').html("Abschlüsse absolut : " + abschlüsse)
+                tooltip.select('.count').html("Abschlüsse Absolut : " + abschlüsse)
                 
                 var numCathegories = getNoShades(pies[index].selector) + 1
                 var relative = 100 * abschlüsse / (getTotalAbschlüsse(Math.floor(displayIndex / numCathegories)))
@@ -151,25 +151,21 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
     }
     
     d3.selectAll("input")
-        .on("change", change);
+        .on("change", function(){setupLegend(); change()});
     // end init
-    
-    
-    function change() {
-        
-        adjustRadii();
-            
-        for (var index=0; index<numPies; index++){ 
-            displayDataList[index] = calculateDisplayData(pies[index].selector);
-            path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
-            path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
-            path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
-        }
-        
-        setupLegend()
-    }
-    
 });
+
+function change() {
+        
+    adjustRadii();
+
+    for (var index=0; index<numPies; index++){ 
+        displayDataList[index] = calculateDisplayData(pies[index].selector);
+        path = svg.datum(displayData).selectAll("path.ring"+index).data(pies[index].pie);
+        path.attr("fill", function(d, i) { return calcColor(i, pies[index].selector); });
+        path.transition().duration(750).attrTween("d", arcTween);  // redraw the arcs
+    }
+}
 
 function adjustRadii(){
     
@@ -219,6 +215,9 @@ function arcTween(a) {
 }
 
 function calcColor(n, selector){
+    if (n == displayData.length-1) 
+        return "#ffffff";
+    
     var shades = getNoShades(selector)
     var colors = createColors(selector, shades)
     
@@ -273,9 +272,17 @@ function calculateDisplayData(sel) {
     else
         calculateDisplayedData(sel)
     
+    return checkForEmptyDisplay()
+}
+
+function checkForEmptyDisplay(){
+    for (var i=0; i<displayData.length; i++){
+        if(displayData[i] != 0)
+            return displayData
+    }
+    
+    displayData[displayData.length-1] = 1
     return displayData
-        
-    //console.log("Selector: " + sel + " displayData: " + displayData);
 }
 
 function calculateDisplayedData(sel){    
@@ -285,7 +292,7 @@ function calculateDisplayedData(sel){
     var flag = setFlagFunction(sel)
      
     displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     checkInput()
     
     if (checked == "Region"){
@@ -336,12 +343,15 @@ function calculateDisplayedData(sel){
             }
         });
     }
+    
+    return deleteUnchecked(sel)
+    
 }
 
 function calculateGeschlechtDisplay(){
     
     displayData = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                  0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     
     checkInput()
     
@@ -385,6 +395,8 @@ function calculateGeschlechtDisplay(){
             displayData[2] += entry.Anzahl_Frauen
         });
     }
+    
+    return deleteUnchecked("Geschlecht")
 }
             
 function setCode(sel){
@@ -445,6 +457,16 @@ function setFlagFunction(selector){
         return function(){return true}
 }
 
+function deleteUnchecked(sel){
+    var numCathegories = getNoShades(sel)+1
+    
+    for (var i=0; i<displayData.length; i++)
+        if (!(legendChecked[Math.floor(i/numCathegories)])){
+            displayData[i] = 0
+        }
+    return displayData
+}
+
 function type(d) {
   d.Jahr = Number(d.Jahr)
   d.Verwaltungsregion_Code = Number(d.Verwaltungsregion_Code)
@@ -473,6 +495,10 @@ function checkInput(){
 
 // Tooltip //
 
+/**
+* @index: the #pie, aka the index in the array of pies
+* @displayIndex: the #pieSegment, aka the nth element of the pie
+**/
 function getCathegory(index, displayIndex){
     var sel = pies[index].selector
     var numCathegories = getNoShades(sel)+1
@@ -533,6 +559,8 @@ function calculateTotalAbschlüsse(){
 
 function setupLegend(){
 
+    legendChecked = [true,true,true,true,true,true,true,true,true,true]
+    
     var legendRectSize = windowWidth/25;
     var legendSpacing = windowWidth/100;
 
@@ -551,16 +579,30 @@ function setupLegend(){
         var offset = windowHeight/2.5;//height * legendArray.length / 2;
         var horz = windowWidth/2.5;
         var vert = i * height - offset;
+          
         return 'translate(' + horz + ',' + vert + ')';
       });
-    
-    
 
     legend.append('rect')
       .attr('width', legendRectSize)
       .attr('height', legendRectSize)
+      .attr("id", function(d, i) {return i})
       .style('fill', function(d, i) {return legendArray[i]})
-      .style('stroke', function(d, i) {return legendArray[i]});
+      .style('stroke', function(d, i) {return legendArray[i]})
+      .on("click", function(label, i) {
+        var rect = d3.select(this)
+        if (legendChecked[i]){
+            legendChecked[i] = false
+            rect.style("fill", "transparent")
+        }
+        else{
+            legendChecked[i] = true
+            rect.style('fill', function() {return legendArray[rect.attr("id")]})
+        }
+        
+        change()
+        
+      });
 
 
     legend.append('text')
