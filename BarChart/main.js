@@ -1,9 +1,55 @@
 d3.csv("VisualisierungsDaten.csv", function(error, data) {
     
+//    var resize = function () {
+//        windowWidth = window.innerWidth,
+//            windowWidth = windowWidth/1.2;
+//        
+//        window.innerHeight < windowWidth/1.5 ? windowHeight = windowWidth/1.5 : window.innerHeight;
+//            
+//        
+//        //help variables and functions (scaling etc.)
+//        margin = {top: 100, right: 20, bottom: 200, left: 60},
+//            width = windowWidth - margin.left - margin.right,
+//            height = windowHeight - margin.top - margin.bottom;
+//        
+//        x0 = d3.scale.ordinal()
+//            .rangeRoundBands([0, width], .1);
+//
+//        x1 = d3.scale.ordinal();
+//
+//        y = d3.scale.linear()
+//            .range([height, 0]);
+//
+//        color = d3.scale.ordinal()
+//            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+//
+//        xAxis = d3.svg.axis()
+//            .scale(x0)
+//            .orient("bottom");
+//
+//        yAxis = d3.svg.axis()
+//            .scale(y)
+//            .orient("left")
+//            .tickFormat(d3.format(".2s"));
+//        
+//        d3.select("svg").attr("width", width + margin.left + margin.right)
+//            .attr("height", height + margin.top + margin.bottom)
+//            .select("g")
+//            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+//        
+//        render('Träger', 'Total');
+//    }
+//    
+//    d3.select(window).on('resize', resize); 
+    
+    var windowWidth = window.innerWidth,
+        windowWidth = windowWidth*0.75,
+        windowHeight = windowWidth*0.64;
+        
     //help variables and functions (scaling etc.)
-    var margin = {top: 100, right: 20, bottom: 1500, left: 60},
-        width = 1000 - margin.left - margin.right,
-        height = 1950 - margin.top - margin.bottom;
+    var margin = {top: 75, right: 20, bottom: 200, left: 80},
+        width = windowWidth - margin.left - margin.right,
+        height = windowHeight - margin.top - margin.bottom;
 
     var x0 = d3.scale.ordinal()
         .rangeRoundBands([0, width], .1);
@@ -14,7 +60,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         .range([height, 0]);
 
     var color = d3.scale.ordinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        .range(["#ff8c00", "#d0743c", "#a05d56", "#6b486b", "#7b6888", "#8a89a6", "#98abc5"]);
 
     var xAxis = d3.svg.axis()
         .scale(x0)
@@ -25,8 +71,8 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         .orient("left")
         .tickFormat(d3.format(".2s"));
     
-    var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
+    var svg = d3.select("body").select("svg")
+        .attr("width", "79%")
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -43,7 +89,7 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
     }
       
     //function to render the whole diagramm
-    var render = function(selected, subSelected){
+    var render = function(selected, subSelected, detail){
         
         //method to get names of groupings of selected attribute
         var getGroupNames = function (attribute) {
@@ -114,8 +160,20 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
         x1.domain(subGroupNames).rangeRoundBands([0, x0.rangeBand()]);
         y.domain([0, d3.max(data_object, function(d) { return d3.max( d.count, function(d)  { return d.value; }); })]);
         
+        
+
+
+//        svg.select("g")
+//            .attr("class", "y axis")
+//            .call(yAxis)
+//            .select("text")
+//            .attr("transform", "rotate(-90)")
+//            .attr("y", 6)
+//            .attr("dy", ".71em")
+//            .style("text-anchor", "end")
+//            .text("Absolventen");
         //(re)create x axis
-        svg.select("g.x.axis").call(xAxis);
+        svg.select("g.x.axis").attr("transform", "translate(0," + height + ")").call(xAxis);
         
         //(re)create y axis
         svg.select("g.y.axis").call(yAxis);
@@ -126,9 +184,10 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
             .attr("class", "x axis")
                 .selectAll("text")
                 .style("text-anchor", "end")
+                .style("font-size", "12px")
                 .attr("dx", "-.8em")
                 .attr("dy", "-.55em")
-                .attr("transform", "rotate(-90)" );
+                .attr("transform", "rotate(-45)" );
         }
         
         //clear all bars before creating new ones
@@ -147,9 +206,13 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
             .attr("class", "bars")
             .attr("width", x1.rangeBand())
             .attr("x", function(d) { return x1(d.name); })
-            .attr("y", function(d) { return y(d.value); })
+            .attr("y", function(d) { return y(0); })
+            .style("fill", function(d) { return color(d.name); })
+            .attr("height", 0)    
+            .transition()
             .attr("height", function(d) { return height - y(d.value); })
-            .style("fill", function(d) { return color(d.name); });
+            .attr("y", function(d) { return y(d.value) })
+            .duration(800);
         
         // define what happens when you hover over a bar
         bars.selectAll("rect").on('mouseover', function (d) {
@@ -170,11 +233,12 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
                 html += '<li><strong>'+k+'</strong> : '+bardata[k]+'</li>';
             }
 
-            d3.select('#info ul').html(html);
+            d3.select('#info ul').style("box-shadow", "0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset")
+                .style("width", "80%").style("top", "-200px").style("left","-20px").style("padding", "20px 30px 20px 30px").html(html);
 
         }).on('mouseout', function (d) {
             // empty the #info div
-            d3.select('#info ul').html('');
+            d3.select('#info ul').style("padding", "0").html('');
             // make the color normal again
             d3.select(this).style('fill', d3.select(this).attr("origin-color"));
         });
@@ -222,23 +286,28 @@ d3.csv("VisualisierungsDaten.csv", function(error, data) {
     //method to create subselector
     var createSubSelector = function(selected) {
 
-        var subselector = d3.select('#subSelector').selectAll('span').data(subKeys.filter(function(d) { return d !== selected } )).enter()
-            .append('div');
+        var subselector = d3.select('#subSelector')
+                            .selectAll('span')
+                            .data(subKeys.filter(function(d) { 
+                                return (d !== selected && !(d == "Bildungsart" && selected == "Typ") && !(d == "Typ" && selected == "Bildungsart") )
+                            }))
+                            .enter()
+                            .append('div');
         
         subselector.append('input')
             .attr({
                 type: "radio",
                 name: "subSelection",
-                id: function(d) { return d }})
+                id: function(d) { return (d + " sub") }})
             .on('click', function (subSelected) { render(selected, subSelected) });
 
 
         subselector.append('label')
-            .attr('for', function(d){return d})
+            .attr('for', function(d){return (d + " sub")})
             .text(function(d){return d});
         
         //Total is checked by default
-        radiobtn_total = document.getElementById("Total");
+        radiobtn_total = document.getElementById("Total sub");
         radiobtn_total.checked = true;
     }
     
