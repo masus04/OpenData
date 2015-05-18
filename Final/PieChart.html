@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 75%;
+    }
+
+    text {
+        font: 10px sans-serif;
+    }
+
+    form {
+        position: absolute;
+        right: 10px;
+        top: 80px;
+    }
+    
+    .tooltip {
+      background: #eee;
+      box-shadow: 0 0 5px #999999;
+      color: #333;
+      display: none;
+      font-size: 12px;
+      padding: 10px;
+      position: absolute;
+      text-align: center;
+      top: 100px;
+      width: 250px;
+      z-index: 10;
+    }
+    
+    #selector {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    rect {
+        cursor: pointer;
+        stroke-width: 2;
+    }                            
+    
+</style> 
+<body>
+    <div id='cssmenu'>
+        <ul>
+            <li class='active'><a href='#'>PieChart</a></li>
+            <li><a href='BarChart.html'>BarChart</a></li>           
+            <li><a href='index.html'>Home</a></li>
+        </ul>
+    </div>
+    <form>
+        <div id="selector">
+            <label><input type="radio" name="dataset" id="Region" value="Region" checked> Region</label>
+            <label><input type="radio" name="dataset" id="Sprache"  value="Sprache" > Sprache</label>
+            <label><input type="radio" name="dataset" id="Geschlecht"  value="Geschlecht" > Geschlecht</label>
+            <label><input type="radio" name="dataset" id="Gymnasium" value="Gymnasium" > Schwerpunktfach Gymnasium</label>
+            <label><input type="radio" name="dataset" id="Berufsmatur" value="Berufsmatur" > Schwerpunktfach Berufsmatur</label>
+        </div>
+
+        <div id="chart">
+        </div>
+
+    </form>
+</body>
+<script type="text/javascript" src="d3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="PieChart.js" charset="utf-8"></script>
+<script type="text/javascript" src="jquery-1.11.2.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="menu.js" charset="utf-8"></script>
+<link rel="stylesheet" href="menu.css">

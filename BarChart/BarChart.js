@@ -1,4 +1,4 @@
-d3.csv("VisualisierungsDaten.csv", function(error, data) {
+d3.csv("BarChartData.csv", function(error, data) {
     
 //    var resize = function () {
 //        windowWidth = window.innerWidth,

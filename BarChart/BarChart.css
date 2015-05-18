@@ -1,0 +1,53 @@
+body {
+  font: 14px sans-serif;
+    height:100%;
+    width:98%;
+}
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
+div#rightPane, body svg {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+    border-radius: 4;
+}
+
+body svg {
+    display:inline;
+    float: left;
+    padding-bottom:30px;
+}
+
+
+div.selectors, div#info{
+    height: 100%;
+    width: 18%;
+    float:right;
+    display:inline;
+/*    margin-bottom: 20px;*/
+    padding: 10px;
+}
+
+div#gruppierung {
+    padding-bottom: 25px;
+    border-bottom: 1px solid black;   
+}
+
+div#info {
+    margin: 0;   
+}
+
+div.selectors h2 {
+    text-align: center;
+}
