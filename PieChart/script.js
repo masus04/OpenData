@@ -5,6 +5,8 @@ var windowWidth = window.innerWidth,
     checked = "none",
     legendChecked = [true,true,true,true,true,true,true,true,true,true];
 
+//d3.selectAll("button").attr("width", Math.floor(windowWidth/3) + "px")
+
 function setFontSize(fontsize){    
     var labels = d3.selectAll("label")
     
@@ -138,7 +140,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
                 tooltip.select('.percent').html("Abschlüsse Relativ: " + relative.toFixed(2) + "%")
                 tooltip.style('display', 'block');
             
-                tooltip.style("top", "50px")
+                tooltip.style("top", windowHeight/8+"px")
                 tooltip.style("left", "0px")
             })
             
