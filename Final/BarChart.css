@@ -113,7 +113,7 @@ div.selectors h2, div#info h2 {
 
 
 /* Responsive */
-@media only screen and (max-width: 780px){
+@media only screen and (max-device-width: 780px), only screen and (max-width: 780px) {
     div#info{
         display: none;   
     }
@@ -122,20 +122,43 @@ div.selectors h2, div#info h2 {
         border-bottom: none;
     }
 }
+
+@media only screen and (max-device-width: 700px){
+    body svg {
+        font-size: 30px;
+    }   
+    
+    div.selectors h2{
+        font-size: 40px;   
+    }
+    
+    div.selectors {
+        font-size: 34px;
+        width: 40%;
+
+    }
+}
 /* Responsive */
-@media only screen and (max-width: 700px){
+@media only screen and (max-device-width: 700px), only screen and (max-width: 700px){
     body svg {
         width: 100%;
+    }
+    
+    body svg g{
+        margin: 0 0 0 50px;
     }
     
     div.selectors {
         float: left;
         border-bottom: none;
-        width: 40%;
+        width: 30%;
+        margin: 60px 0 0 60px;
     }
     
+
+    
     div#rightPane {
-        width: 100%;
+        width: 90%;
     }
     
     #gruppierung {

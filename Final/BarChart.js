@@ -47,7 +47,8 @@ d3.csv("BarChartData.csv", function(error, data) {
     var windowWidth = window.innerWidth,
         windowWidth = windowWidth*0.75,
         windowHeight = windowWidth*0.64;
-        
+    
+    
     //help variables and functions (scaling etc.)
     var margin = {top: 75, right: 20, bottom: windowWidth/100, left: 80},
         width = windowWidth - margin.left - margin.right,
@@ -73,8 +74,14 @@ d3.csv("BarChartData.csv", function(error, data) {
         .orient("left")
         .tickFormat(d3.format(".2s"));
     
+    if(window.innerWidth < 700){
+        svgWidth = '90%';
+    }else{
+        svgWidth = '79%';
+    }
+    
     var svg = d3.select("body").select("svg")
-        .attr("width", "79%")
+        .attr("width", svgWidth)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -168,6 +175,8 @@ d3.csv("BarChartData.csv", function(error, data) {
         //(re)create y axis
         svg.select("g.y.axis").call(yAxis);
 
+        svgHeight = height + margin.bottom + margin.top;
+
         // display text vertical if Bildungsart is selected, because there are a lot of values
         if(selected == "Bildungsart" || windowWidth < 780){
             svg.select("g")
@@ -178,8 +187,9 @@ d3.csv("BarChartData.csv", function(error, data) {
                 .attr("dy", "-.55em")
                 .attr("transform", "rotate(-45)" );
             
-            svgHeight = height + margin.bottom + margin.top;
-            d3.select("svg").style("height", svgHeight*1.3);
+            d3.select("svg").style("height", svgHeight*1.35);
+        }else{
+            d3.select("svg").style("height", svgHeight);   
         }
         
         //clear all bars before creating new ones

@@ -5,7 +5,7 @@
       var cssmenu = $(this), settings = $.extend({
         title: "Menu",
         format: "dropdown",
-        breakpoint: 400,
+        breakpoint: 780,
         sticky: false
       }, options);
 
