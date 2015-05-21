@@ -1,5 +1,7 @@
 d3.csv("BarChartData.csv", function(error, data) {
     
+    
+    
 //    var resize = function () {
 //        windowWidth = window.innerWidth,
 //            windowWidth = windowWidth/1.2;
@@ -47,7 +49,7 @@ d3.csv("BarChartData.csv", function(error, data) {
         windowHeight = windowWidth*0.64;
         
     //help variables and functions (scaling etc.)
-    var margin = {top: 75, right: 20, bottom: 200, left: 80},
+    var margin = {top: 75, right: 20, bottom: windowWidth/100, left: 80},
         width = windowWidth - margin.left - margin.right,
         height = windowHeight - margin.top - margin.bottom;
 
@@ -160,18 +162,6 @@ d3.csv("BarChartData.csv", function(error, data) {
         x1.domain(subGroupNames).rangeRoundBands([0, x0.rangeBand()]);
         y.domain([0, d3.max(data_object, function(d) { return d3.max( d.count, function(d)  { return d.value; }); })]);
         
-        
-
-
-//        svg.select("g")
-//            .attr("class", "y axis")
-//            .call(yAxis)
-//            .select("text")
-//            .attr("transform", "rotate(-90)")
-//            .attr("y", 6)
-//            .attr("dy", ".71em")
-//            .style("text-anchor", "end")
-//            .text("Absolventen");
         //(re)create x axis
         svg.select("g.x.axis").attr("transform", "translate(0," + height + ")").call(xAxis);
         
@@ -179,19 +169,41 @@ d3.csv("BarChartData.csv", function(error, data) {
         svg.select("g.y.axis").call(yAxis);
 
         // display text vertical if Bildungsart is selected, because there are a lot of values
-        if(selected == "Bildungsart"){
+        if(selected == "Bildungsart" || windowWidth < 780){
             svg.select("g")
             .attr("class", "x axis")
                 .selectAll("text")
                 .style("text-anchor", "end")
-                .style("font-size", "12px")
                 .attr("dx", "-.8em")
                 .attr("dy", "-.55em")
                 .attr("transform", "rotate(-45)" );
+            
+            svgHeight = height + margin.bottom + margin.top;
+            d3.select("svg").style("height", svgHeight*1.3);
         }
         
         //clear all bars before creating new ones
         svg.selectAll(".bars").remove();
+        
+        //ToolTip
+        var tip = d3.tip()
+          .attr('class', 'd3-tip')
+          .offset([-10, 0])
+          .html(function(d) {
+            var bardata = {};
+            bardata[selected] = d.group;
+            bardata[subSelected] = d.name;
+            bardata['Anz. Absolventen'] = d.value;
+
+            var html = '';
+
+            for(var k in bardata) {
+                html += '<li><strong>'+k+'</strong> : '+bardata[k]+'</li>';
+            }
+            return html;
+          });
+        
+        svg.call(tip);
 
         //Create bars
         var bars = svg.selectAll(".bars")
@@ -208,44 +220,14 @@ d3.csv("BarChartData.csv", function(error, data) {
             .attr("x", function(d) { return x1(d.name); })
             .attr("y", function(d) { return y(0); })
             .style("fill", function(d) { return color(d.name); })
-            .attr("height", 0)    
+            .attr("height", 0)
+            .on('mouseover', tip.show)
+            .on('mouseout', tip.hide)
             .transition()
             .attr("height", function(d) { return height - y(d.value); })
             .attr("y", function(d) { return y(d.value) })
             .duration(800);
-        
-        // define what happens when you hover over a bar
-        bars.selectAll("rect").on('mouseover', function (d) {
-            // make the color a bit darker
-            var color = d3.select(this).style("fill").replace(/ /g, '');
-            d3.select(this).attr("origin-color", color);
-            d3.select(this).style('fill', shadeColor(color, -0.25));
-                
-            //hover data for a bar
-            var bardata = {};
-            bardata[selected] = d.group;
-            bardata[subSelected] = d.name;
-            bardata['Anz. Absolventen'] = d.value;
-
-            var html = '';
-
-            for(var k in bardata) {
-                html += '<li><strong>'+k+'</strong> : '+bardata[k]+'</li>';
-            }
-
-            d3.select('#info ul').style("box-shadow", "0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset")
-                .style("width", "80%").style("top", "-200px").style("left","-20px").style("padding", "20px 30px 20px 30px").html(html);
-
-        }).on('mouseout', function (d) {
-            // empty the #info div
-            d3.select('#info ul').style("padding", "0").html('');
-            // make the color normal again
-            d3.select(this).style('fill', d3.select(this).attr("origin-color"));
-        });
-
-        
-
-        
+                    
         //build the legend in the top right corner
         svg.selectAll(".legend").remove();      //clear legend first
         var legend = svg.selectAll(".legend")
@@ -279,9 +261,10 @@ d3.csv("BarChartData.csv", function(error, data) {
                     && k !== "Jahr" );   
     });
     //Additional keys for subselector
-    subKeys = keys.slice(0);
+    subKeys = keys.slice(0).filter(function(d){ return d != "Bildungsart"; });
     subKeys.push("Geschlecht");
     subKeys.push("Total");
+    
     
     //method to create subselector
     var createSubSelector = function(selected) {
@@ -289,7 +272,7 @@ d3.csv("BarChartData.csv", function(error, data) {
         var subselector = d3.select('#subSelector')
                             .selectAll('span')
                             .data(subKeys.filter(function(d) { 
-                                return (d !== selected && !(d == "Bildungsart" && selected == "Typ") && !(d == "Typ" && selected == "Bildungsart") )
+                                return (d !== selected && !(d == "Typ" && selected == "Bildungsart") )
                             }))
                             .enter()
                             .append('div');
@@ -354,4 +337,5 @@ d3.csv("BarChartData.csv", function(error, data) {
     radiobtn_vwlt = document.getElementById("Verwaltungsregion");
     radiobtn_vwlt.checked = true;
   
+
 });

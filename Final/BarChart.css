@@ -1,5 +1,7 @@
+@import url(http://fonts.googleapis.com/css?family=Oswald);
+
 body {
-  font: 14px sans-serif;
+  font: 10px sans-serif;
     height:100%;
     width:98%;
 }
@@ -19,9 +21,10 @@ body {
   display: none;
 }
 
-div#rightPane, body svg {
+body svg {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
     border-radius: 4;
+    overflow: visible;
 }
 
 body svg {
@@ -30,25 +33,112 @@ body svg {
     padding-bottom:30px;
 }
 
+#gruppierung {
+    padding-top: 0;
+}
 
 div.selectors, div#info{
     height: 100%;
     width: 18%;
     float:right;
     display:inline;
-/*    margin-bottom: 20px;*/
     padding: 10px;
 }
+
+div.selectors {
+    padding-bottom: 25px;
+    border-bottom: 1px solid black;   
+}
+/*
 
 div#gruppierung {
     padding-bottom: 25px;
     border-bottom: 1px solid black;   
 }
+*/
 
 div#info {
     margin: 0;   
 }
 
-div.selectors h2 {
-    text-align: center;
+div#info ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+div#info_inactive {
+    font-style:italic;
+}
+
+div.selectors h2, div#info h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    text-align: left;
+    margin-top: 0;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+.bars:hover {
+  stroke: black;
+  stroke-width: 2px;
+}
+
+
+/* Responsive */
+@media only screen and (max-width: 780px){
+    div#info{
+        display: none;   
+    }
+    
+    #untergruppierung {
+        border-bottom: none;
+    }
+}
+/* Responsive */
+@media only screen and (max-width: 700px){
+    body svg {
+        width: 100%;
+    }
+    
+    div.selectors {
+        float: left;
+        border-bottom: none;
+        width: 40%;
+    }
+    
+    div#rightPane {
+        width: 100%;
+    }
+    
+    #gruppierung {
+        padding-top: 10px;   
+    }
 }
