@@ -128,6 +128,8 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
                 var count = displayDataList[index][displayIndex]
                 
                 var abschlüsse = getAbschlüsse(index, displayIndex)
+                if (displayIndex == 100)
+                    abschlüsse = 0
                 
                 tooltip.select('.subCathegory').html(pies[index].selector + ": " + getCathegory(index, displayIndex))
                 tooltip.select('.count').html("Abschlüsse Absolut : " + abschlüsse)
@@ -135,7 +137,7 @@ d3.csv("VisualisierungsDaten_final.csv", type, function(error, d) {
                 var numCathegories = getNoShades(pies[index].selector) + 1
                 var relative = 100 * abschlüsse / (getTotalAbschlüsse(Math.floor(displayIndex / numCathegories)))
                 
-                tooltip.select('.percent').html("Abschlüsse Relativ: " + relative.toFixed(2) + "%")
+                tooltip.select('.percent').html("Abschlüsse Relativ: " + ((isNaN(relative)) ? "0%": relative.toFixed(2) + "%"))
                 tooltip.style('display', 'block');
             
                 tooltip.style("top", "50px")
