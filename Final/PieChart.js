@@ -611,7 +611,7 @@ function setupLegend(){
       .attr('x', legendRectSize + legendSpacing)
       .attr('y', legendRectSize - legendSpacing)
       .text(function(d, i) {return legendText(i, checked)})
-      .style("font-size", Math.round(windowWidth/75));
+      .style("font-size", Math.round(windowWidth/50));
 }
 
 function legendText(i, sel){
@@ -640,3 +640,5 @@ function legendText(i, sel){
 
     return array[i]
 }
+
+d3.select("#help").selectAll("p").style("font-size", Math.floor(windowWidth/50)+"px")
